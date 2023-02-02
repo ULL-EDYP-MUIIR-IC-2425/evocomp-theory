@@ -1,0 +1,9 @@
+title: "Inteligencia Computacional - Máster en Informática Industrial y Robótica - ULL"
+theme: jekyll-theme-architect
+
+plugins:
+  - jekyll-relative-links
+
+relative_links:
+  enabled:     true
+  collections: false
