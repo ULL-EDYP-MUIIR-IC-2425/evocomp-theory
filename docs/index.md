@@ -1,4 +1,4 @@
-# A Brief introduction to Evolutionary Computation
+# A brief introduction to Evolutionary Computation
 
 Here you will find different notes regarding the first part of this course
 aimed at introducing Evolutionary Computation (EC). Programming examples
