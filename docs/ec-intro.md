@@ -1,4 +1,4 @@
-# Historial introduction to Evolutionary Computation
+# Historical introduction to Evolutionary Computation
 
 Early work on Evolutionary Computation (EC) was based on the application of evolutionary
 systems such as optimisation methods, feedback-control approaches, or automatic tools to
