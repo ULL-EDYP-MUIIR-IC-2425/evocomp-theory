@@ -5,3 +5,4 @@ aimed at introducing Evolutionary Computation (EC). Programming examples
 are be based on Python.
 
 1. [Historical introduction to Evolutionary Computation](ec-intro.md)
+2. [Basic concepts about Evolutionary Algorithms](ea-concepts.md)

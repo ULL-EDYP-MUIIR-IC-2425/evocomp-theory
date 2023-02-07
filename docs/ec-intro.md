@@ -147,7 +147,7 @@ system analogy. Master’s thesis, University of California, Los Angeles, USA,
 1956.
 
 [5] R. M. Friedberg. A Learning Machine: Part I. IBM Journal of Research and
-Development, 2(1):2–13, 1958
+Development, 2(1):2–13, 1958.
 
 [6] D. B. Fogel. Evolutionary Computation: The Fossil Record. Wiley-IEEE Press,
 1st edition, 1998.
