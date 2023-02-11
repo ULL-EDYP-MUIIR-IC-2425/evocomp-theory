@@ -13,7 +13,6 @@ better to the environment. This phenomenon is also known as the *survival of the
 Some of these survivors will be able to reproduce with the aim of obtaining even fitter
 individuals. 
 
-|----------------------------------------------------------------------------|
 | **Evolutionary process**       | **Resolution of an optimisation problem** |
 | ------------------------------ | ------------------------------------------|
 | Population                     | Set of solutions                          |
@@ -24,7 +23,6 @@ individuals.
 | Gene                           | Decision variable                         |
 | Allele                         | Value of a decision variable              |
 | Locus                          | Position of a decision variable           |
-|----------------------------------------------------------------------------|
 
 <br/>
 
