@@ -62,8 +62,8 @@ a fitness value. Finally, a *replacement* or *survivor selection* operator is ap
 (step 7) to determine the set of individuals from among the parents and the
 offspring that are going to survive as the parent population for the next generation.
 These four steps are repeated until a stopping criterion (step 3) is satisfied. A flow
-chart representing a generation of an EA is shown below as well.
-
+chart representing a generation of an EA is shown below as well.  
+  
 ```
 1. Initialisation. Generate the initial parent population.
 2. Evaluation. Evaluate all individuals in the initial parent population by applying the
