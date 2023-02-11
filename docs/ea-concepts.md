@@ -64,21 +64,19 @@ offspring that are going to survive as the parent population for the next genera
 These four steps are repeated until a stopping criterion (step 3) is satisfied. A flow
 chart representing a generation of an EA is shown below as well.  
   
-```
-1. Initialisation. Generate the initial parent population.
-2. Evaluation. Evaluate all individuals in the initial parent population by applying the
-objective function in order to assign a fitness value to every individual.
-3. while (stopping criterion is not satisfied) do
-   4. Parent selection. Select the individuals from the parent population to build the
+1. **Initialisation**. Generate the initial parent population.
+2. **Evaluation**. Evaluate all individuals in the initial parent population by applying the
+   objective function in order to assign a fitness value to every individual.
+3. **while** (stopping criterion is not satisfied) **do**
+   4. **Parent selection**. Select the individuals from the parent population to build the
       mating pool.
-   5. Variation. Apply the variation operators to the mating pool so as to create the
+   5. **Variation**. Apply the variation operators to the mating pool so as to create the
       offspring population.
-   6. Evaluation. Evaluate the generated offspring via the objective function so as to
+   6. **Evaluation**. Evaluate the generated offspring via the objective function so as to
       assign a fitness value to every offspring.
-   7. Survivor selection. Select individuals from among the parents and offspring to
+   7. **Survivor selection**. Select individuals from among the parents and offspring to
       survive as the new parent population for the next generation.
-8. end while
-```
+8. end **while**
 
-![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.eps)
+![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
 
