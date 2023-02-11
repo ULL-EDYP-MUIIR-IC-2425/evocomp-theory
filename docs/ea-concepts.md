@@ -13,8 +13,21 @@ better to the environment. This phenomenon is also known as the *survival of the
 Some of these survivors will be able to reproduce with the aim of obtaining even fitter
 individuals. 
 
+|----------------------------------------------------------------------------|
+| **Evolutionary process**       | **Resolution of an optimisation problem** |
+| ------------------------------ | ------------------------------------------|
+| Population                     | Set of solutions                          |
+| Individual                     | Solution                                  |
+| Fitness                        | Objective function                        |
+| Environment                    | Optimisation problem                      |
+| Genotype, Phenotype, Chromosome| Internal representation of a solution     |
+| Gene                           | Decision variable                         |
+| Allele                         | Value of a decision variable              |
+| Locus                          | Position of a decision variable           |
+|----------------------------------------------------------------------------|  
+
 Continuing with metaphor between an evolutionary process and the resolution of
-an optimisation problem (see Table below) a *structure* or an *individual* is an encoded
+an optimisation problem (see Table above ) a *structure* or an *individual* is an encoded
 solution to some problem. The codification of an individual or its internal representation
 is known as the *genotype*, which is decoded to obtain the *phenotype*, or
 decoded solution. If a *direct encoding* of the individuals is used, the genotype and
@@ -34,20 +47,21 @@ should note that herein direct encoding of the individuals is always used. In ad
 genotypes consist of a unique chromosome. Consequently, the terms genotype and chromosome
 refer to the internal representation of an individual.
 
-|----------------------------------------------------------------------------|
-| **Evolutionary process**       | **Resolution of an optimisation problem** |
-| ------------------------------ | ------------------------------------------|
-| Population                     | Set of solutions                          |
-| Individual                     | Solution                                  |
-| Fitness                        | Objective function                        |
-| Environment                    | Optimisation problem                      |
-| Genotype, Phenotype, Chromosome| Internal representation of a solution     |
-| Gene                           | Decision variable                         |
-| Allele                         | Value of a decision variable              |
-| Locus                          | Position of a decision variable           |
-|----------------------------------------------------------------------------|
+- 1: **Initialisation**. Generate the initial parent population.
+- 2: **Evaluation**. Evaluate all individuals in the initial parent population by applying the
+  objective function in order to assign a fitness value to every individual.
+- 3: **while** (stopping criterion is not satisfied) **do**
+   - 4: **Parent selection**. Select the individuals from the parent population to build the
+     mating pool.
+   - 5: **Variation**. Apply the variation operators to the mating pool so as to create the
+     offspring population.
+   - 6: **Evaluation**. Evaluate the generated offspring via the objective function so as to
+     assign a fitness value to every offspring.
+   - 7: **Survivor selection**. Select individuals from among the parents and offspring to
+     survive as the new parent population for the next generation.
+- 8: end **while**
 
-The majority of EAs share the same generic framework (see algorithm below).
+The majority of EAs share the same generic framework (see algorithm above).
 During the initialisation stage (step 1) individuals are generated to fill the initial
 parent population. This initial parent population is evaluated (step 2) through the
 application of the objective function so as to assign a fitness value to every individual.
@@ -62,21 +76,7 @@ a fitness value. Finally, a *replacement* or *survivor selection* operator is ap
 (step 7) to determine the set of individuals from among the parents and the
 offspring that are going to survive as the parent population for the next generation.
 These four steps are repeated until a stopping criterion (step 3) is satisfied. A flow
-chart representing a generation of an EA is shown below as well.  
-  
-1. **Initialisation**. Generate the initial parent population.
-2. **Evaluation**. Evaluate all individuals in the initial parent population by applying the
-   objective function in order to assign a fitness value to every individual.
-3. **while** (stopping criterion is not satisfied) **do**
-   4. **Parent selection**. Select the individuals from the parent population to build the
-      mating pool.
-   5. **Variation**. Apply the variation operators to the mating pool so as to create the
-      offspring population.
-   6. **Evaluation**. Evaluate the generated offspring via the objective function so as to
-      assign a fitness value to every offspring.
-   7. **Survivor selection**. Select individuals from among the parents and offspring to
-      survive as the new parent population for the next generation.
-8. end **while**
+chart representing a generation of an EA is shown below.
 
 ![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
 
