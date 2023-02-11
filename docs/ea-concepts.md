@@ -1,8 +1,3 @@
----
-header-includes:
-  - \usepackage{algorithm,algorithmic}
----
-
 # Basic concepts about Evolutionary Algorithms
 
 This section provides a detailed discussion of the basic terms and concepts that
@@ -52,8 +47,8 @@ refer to the internal representation of an individual.
 | Locus                          | Position of a decision variable           |
 |----------------------------------------------------------------------------|
 
-As was stated in previous sections, several EAs exist. However, they share the
-same generic framework. Algorithm 1 shows the generic pseudocode of an EA.
+
+The majority of EAs share the same generic framework (see figure below).
 During the initialisation stage—line 1—individuals are generated to fill the initial
 parent population. This initial parent population is evaluated—line 2—through the
 application of the objective function so as to assign a fitness value to every individual.
@@ -70,22 +65,17 @@ offspring that are going to survive as the parent population for the next genera
 These four steps are repeated until a stopping criterion—line 3—is satisfied. A flow
 chart representing a generation of an EA is shown in Figure 2.1.
 
-\begin{algorithm}[t]
- \caption{Generic pseudocode for an evolutionary algorithm}
- \begin{small}
-  \begin{algorithmic}[1]
-   \STATE {\bf Initialisation}. Generate the initial parent population.
-   \STATE {\bf Evaluation}. Evaluate all individuals in the initial parent population by applying
-          the objective function in order to assign a fitness value to every individual.
-   \WHILE{(stopping criterion is not satisfied)}
-    \STATE {\bf Parent selection}. Select the individuals from the parent population to build the mating pool.
-    \STATE {\bf Variation}. Apply the variation operators to the mating pool so as to create the offspring population.
-    \STATE {\bf Evaluation}. Evaluate the generated offspring via the objective function so as to assign a fitness
-           value to every offspring.
-    \STATE {\bf Survivor selection}. Select individuals from among the parents and offspring to survive
-           as the new parent population for the next generation.
-   \ENDWHILE
-  \end{algorithmic}
- \end{small}
-\end{algorithm}
+1. **Initialisation**. Generate the initial parent population.
+2. **Evaluation**. Evaluate all individuals in the initial parent population by applying the
+objective function in order to assign a fitness value to every individual.
+3. **while** (stopping criterion is not satisfied) **do**
+  3.1. **Parent selection**. Select the individuals from the parent population to build the
+mating pool.
+  3.2. **Variation**. Apply the variation operators to the mating pool so as to create the
+offspring population.
+  3.3. **Evaluation**. Evaluate the generated offspring via the objective function so as to
+assign a fitness value to every offspring.
+  3.4. **Survivor selection**. Select individuals from among the parents and offspring to
+survive as the new parent population for the next generation.
+4. end **while**
 
