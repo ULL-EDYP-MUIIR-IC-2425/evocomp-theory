@@ -1,6 +1,6 @@
 ---
 header-includes:
-  - \usepackage{algorithm2e}
+  - \usepackage{algorithm,algorithmic}
 ---
 
 # Basic concepts about Evolutionary Algorithms
