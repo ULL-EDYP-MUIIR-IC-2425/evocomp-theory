@@ -82,5 +82,6 @@ offspring that are going to survive as the parent population for the next genera
 These four steps are repeated until a stopping criterion (step 3) is satisfied. A flow
 chart representing a generation of an EA is shown below.
 
-![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
+<br/>
 
+![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
