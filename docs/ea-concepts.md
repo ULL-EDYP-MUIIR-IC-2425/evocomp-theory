@@ -85,3 +85,33 @@ chart representing a generation of an EA is shown below.
 ![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
 
 <br/>
+
+From the above content, it can be observed that different components, such as the
+survivor selection strategy or the variation operators, among others, have to be specified
+in order to completely design an EA. Additionally, some of these components
+incorporate the use of parameters, such as mutation and crossover rates, or the population
+size, for instance, and consequently they must be also fixed in order to execute the
+EA as designed. In particular, decisions regarding the following components must
+be made during the design of an EA:
+
+* **Individual’s representation, genotype, or chromosome**. The particular
+representation will depend on the particular optimisation problem at hand, and
+examples could be a binary string, a vector of discrete (integer) values and
+vector of continuous (real) values, among others.
+* **Population initialisation**. In the majority of cases the population is
+filled with randomly generated individuals, although more sophisticated
+approaches could also be applied.
+*  **Parent selection mechanism**. This method is responsible for selecting the individuals
+from the parent population for the purpose of reproducing. One of the most
+frequently used strategies is the  well-known *Binary Tournament* operator.
+* **Variation operators**. The objective of the variation operators is to generate
+offspring starting from the mating pool. The most widely applied variation approaches
+are the crossover operator, such as the one-point crossover, and mutation operators,
+like the bit-flip mutation.
+* **Survivor selection strategy**. The survivor selection
+mechanism is responsible for choosing, from among the current parents
+and offspring, the individuals that will survive for the next generation. Examples
+could be the *generational* and the *replace-worst* survivor selection strategies.
+* **Stopping criterion**. One of the most frequently used stopping criteria are
+the execution time or the number of evaluations involving the objective functions
+of the problem being solved.
