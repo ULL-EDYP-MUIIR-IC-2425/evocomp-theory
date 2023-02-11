@@ -47,29 +47,28 @@ refer to the internal representation of an individual.
 | Locus                          | Position of a decision variable           |
 |----------------------------------------------------------------------------|
 
-
-The majority of EAs share the same generic framework (see figure below).
-During the initialisation stage—line 1—individuals are generated to fill the initial
-parent population. This initial parent population is evaluated—line 2—through the
+The majority of EAs share the same generic framework (see algorithm below).
+During the initialisation stage (step 1) individuals are generated to fill the initial
+parent population. This initial parent population is evaluated (step 2) through the
 application of the objective function so as to assign a fitness value to every individual.
-Then, at each iteration or generation of the EA, a set of steps is repeated. Firstly, the
-parents that comprise the mating pool—line 4—are selected via the parent selection
-or mating selection mechanism. Then, the variation operators are applied to the
-mating pool to generate the offspring population—line 5. Particularly important
-among the different variation operators are the recombination operator—or crossover
-operator—and the mutation operator. Once the offspring are obtained, they have
-to be evaluated—line 6—by means of the objective function in order to assign them
-a fitness value. Finally, a replacement or survivor selection operator is applied—line
-7—in order to determine the set of individuals from among the parents and the
+Then, at each iteration or *generation* of the EA, a set of steps is repeated. Firstly, the
+parents that comprise the *mating pool* (step 4) are selected via the *parent selection*
+or *mating selection* mechanism. Then, the *variation operators* are applied to the
+mating pool to generate the offspring population (step 5). Particularly important
+among the different variation operators are the *recombination* or *crossover* operator,
+as well as the *mutation* operator. Once the offspring are obtained, they have
+to be evaluated (step 6) by means of the objective function in order to assign them
+a fitness value. Finally, a *replacement* or *survivor selection* operator is applied
+(step 7) to determine the set of individuals from among the parents and the
 offspring that are going to survive as the parent population for the next generation.
-These four steps are repeated until a stopping criterion—line 3—is satisfied. A flow
-chart representing a generation of an EA is shown in Figure 2.1.
+These four steps are repeated until a stopping criterion (step 3) is satisfied. A flow
+chart representing a generation of an EA is shown below as well.
 
 ```
 1. Initialisation. Generate the initial parent population.
 2. Evaluation. Evaluate all individuals in the initial parent population by applying the
 objective function in order to assign a fitness value to every individual.
-3. while (stopping criterion is not satisfied) **do**
+3. while (stopping criterion is not satisfied) do
    4. Parent selection. Select the individuals from the parent population to build the
       mating pool.
    5. Variation. Apply the variation operators to the mating pool so as to create the
@@ -80,3 +79,6 @@ objective function in order to assign a fitness value to every individual.
       survive as the new parent population for the next generation.
 8. end while
 ```
+
+![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.eps)
+
