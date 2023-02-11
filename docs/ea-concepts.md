@@ -25,8 +25,9 @@ individuals.
 | Allele                         | Value of a decision variable              |
 | Locus                          | Position of a decision variable           |
 |----------------------------------------------------------------------------|
-    
-    
+
+<br/>
+
 Continuing with metaphor between an evolutionary process and the resolution of
 an optimisation problem (see Table above ) a *structure* or an *individual* is an encoded
 solution to some problem. The codification of an individual or its internal representation
