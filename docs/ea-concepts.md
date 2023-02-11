@@ -1,3 +1,8 @@
+---
+header-includes:
+  - \usepackage{algorithm2e}
+---
+
 # Basic concepts about Evolutionary Algorithms
 
 This section provides a detailed discussion of the basic terms and concepts that
@@ -34,9 +39,53 @@ should note that herein direct encoding of the individuals is always used. In ad
 genotypes consist of a unique chromosome. Consequently, the terms genotype and chromosome
 refer to the internal representation of an individual.
 
-|--------------------------------------------------------------|
-| Evolutionary process | Resolution of an optimisation problem |
-| -------------------- | --------------------------------------|
-| Population           | Set of solutions                      |
-| Individual           | Solution                              |
-|--------------------------------------------------------------|
+|----------------------------------------------------------------------------|
+| **Evolutionary process**       | **Resolution of an optimisation problem** |
+| ------------------------------ | ------------------------------------------|
+| Population                     | Set of solutions                          |
+| Individual                     | Solution                                  |
+| Fitness                        | Objective function                        |
+| Environment                    | Optimisation problem                      |
+| Genotype, Phenotype, Chromosome| Internal representation of a solution     |
+| Gene                           | Decision variable                         |
+| Allele                         | Value of a decision variable              |
+| Locus                          | Position of a decision variable           |
+|----------------------------------------------------------------------------|
+
+As was stated in previous sections, several EAs exist. However, they share the
+same generic framework. Algorithm 1 shows the generic pseudocode of an EA.
+During the initialisation stage—line 1—individuals are generated to fill the initial
+parent population. This initial parent population is evaluated—line 2—through the
+application of the objective function so as to assign a fitness value to every individual.
+Then, at each iteration or generation of the EA, a set of steps is repeated. Firstly, the
+parents that comprise the mating pool—line 4—are selected via the parent selection
+or mating selection mechanism. Then, the variation operators are applied to the
+mating pool to generate the offspring population—line 5. Particularly important
+among the different variation operators are the recombination operator—or crossover
+operator—and the mutation operator. Once the offspring are obtained, they have
+to be evaluated—line 6—by means of the objective function in order to assign them
+a fitness value. Finally, a replacement or survivor selection operator is applied—line
+7—in order to determine the set of individuals from among the parents and the
+offspring that are going to survive as the parent population for the next generation.
+These four steps are repeated until a stopping criterion—line 3—is satisfied. A flow
+chart representing a generation of an EA is shown in Figure 2.1.
+
+\begin{algorithm}[t]
+ \caption{Generic pseudocode for an evolutionary algorithm}
+ \begin{small}
+  \begin{algorithmic}[1]
+   \STATE {\bf Initialisation}. Generate the initial parent population.
+   \STATE {\bf Evaluation}. Evaluate all individuals in the initial parent population by applying
+          the objective function in order to assign a fitness value to every individual.
+   \WHILE{(stopping criterion is not satisfied)}
+    \STATE {\bf Parent selection}. Select the individuals from the parent population to build the mating pool.
+    \STATE {\bf Variation}. Apply the variation operators to the mating pool so as to create the offspring population.
+    \STATE {\bf Evaluation}. Evaluate the generated offspring via the objective function so as to assign a fitness
+           value to every offspring.
+    \STATE {\bf Survivor selection}. Select individuals from among the parents and offspring to survive
+           as the new parent population for the next generation.
+   \ENDWHILE
+  \end{algorithmic}
+ \end{small}
+\end{algorithm}
+
