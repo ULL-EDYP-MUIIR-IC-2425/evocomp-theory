@@ -2,7 +2,7 @@
 
 Early work on Evolutionary Computation (EC) was based on the application of evolutionary
 systems such as optimisation methods, feedback-control approaches, or automatic tools to
-generate computer programs. In this dissertation, evolutionary system refers to Darwinian
+generate computer programs. Herein, evolutionary system refers to Darwinian
 evolutionary systems, and consists of the following features [1]:
 
 * There exists a population of individuals which compete for limited resources.
