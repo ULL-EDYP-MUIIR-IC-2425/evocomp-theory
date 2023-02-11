@@ -24,8 +24,6 @@ individuals.
 | Allele                         | Value of a decision variable              |
 | Locus                          | Position of a decision variable           |
 
-<br/>
-
 Continuing with metaphor between an evolutionary process and the resolution of
 an optimisation problem (see Table above ) a *structure* or an *individual* is an encoded
 solution to some problem. The codification of an individual or its internal representation
@@ -81,8 +79,6 @@ These four steps are repeated until a stopping criterion (step 3) is satisfied. 
 chart representing a generation of an EA is shown below.
 
 ![Flow chart representing a generation (iteration) of an Evolutionary Algorithm](img/ea_flow.png)
-
-<br/>
 
 From the above content, it can be observed that different components, such as the
 survivor selection strategy or the variation operators, among others, have to be specified
