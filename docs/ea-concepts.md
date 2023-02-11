@@ -51,14 +51,16 @@ refer to the internal representation of an individual.
 - 2: **Evaluation**. Evaluate all individuals in the initial parent population by applying the
   objective function in order to assign a fitness value to every individual.
 - 3: **while** (stopping criterion is not satisfied) **do**
-   - 4: **Parent selection**. Select the individuals from the parent population to build the
-     mating pool.
-   - 5: **Variation**. Apply the variation operators to the mating pool so as to create the
-     offspring population.
-   - 6: **Evaluation**. Evaluate the generated offspring via the objective function so as to
-     assign a fitness value to every offspring.
-   - 7: **Survivor selection**. Select individuals from among the parents and offspring to
-     survive as the new parent population for the next generation.
+
+    - 4: **Parent selection**. Select the individuals from the parent population to build the
+      mating pool.
+    - 5: **Variation**. Apply the variation operators to the mating pool so as to create the
+      offspring population.
+    - 6: **Evaluation**. Evaluate the generated offspring via the objective function so as to
+      assign a fitness value to every offspring.
+    - 7: **Survivor selection**. Select individuals from among the parents and offspring to
+      survive as the new parent population for the next generation.
+
 - 8: end **while**
 
 The majority of EAs share the same generic framework (see algorithm above).
