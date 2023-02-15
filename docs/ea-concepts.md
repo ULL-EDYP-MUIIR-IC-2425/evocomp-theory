@@ -112,7 +112,7 @@ could be the *generational* and the *replace-worst* survivor selection strategie
 the execution time or the number of evaluations involving the objective functions
 of the problem being solved.
 
-## Parent Selection Mechanisms
+## Parent selection mechanisms
 
 The main aim of the parent selection strategy is to select the individuals from
 the parent population that are going to reproduce in order to generate the offspring.
@@ -171,3 +171,5 @@ size `k`. The larger the tournament size, the higher the number of randomly pick
 individuals, and therefore the lower the probability that an individual with a poor
 fitness will be selected. Thus, as the tournament size increases, the selection
 pressure grows.
+
+## Crossover operators
