@@ -11,7 +11,7 @@ selection mechanisms are required to keep the population from growing uncontroll
 Natural selection promotes the most competitive individuals, i.e. those that adapt
 better to the environment. This phenomenon is also known as the *survival of the fittest*.
 Some of these survivors will be able to reproduce with the aim of obtaining even fitter
-individuals. 
+individuals.
 
 | **Evolutionary process**       | **Resolution of an optimisation problem** |
 | ------------------------------ | ------------------------------------------|
@@ -47,7 +47,7 @@ should note that herein direct encoding of the individuals is always used. In ad
 genotypes consist of a unique chromosome. Consequently, the terms genotype and chromosome
 refer to the internal representation of an individual.
 
-```
+```text
 1: Initialisation. Generate the initial parent population.
 2: Evaluation. Evaluate all individuals in the initial parent population by applying the
    objective function in order to assign a fitness value to every individual.
@@ -97,7 +97,7 @@ vector of continuous (real) values, among others.
 * **Population initialisation**. In the majority of cases the population is
 filled with randomly generated individuals, although more sophisticated
 approaches could also be applied.
-*  **Parent selection mechanism**. This method is responsible for selecting the individuals
+* **Parent selection mechanism**. This method is responsible for selecting the individuals
 from the parent population for the purpose of reproducing. One of the most
 frequently used strategies is the  well-known *Binary Tournament* operator.
 * **Variation operators**. The objective of the variation operators is to generate
@@ -111,3 +111,63 @@ could be the *generational* and the *replace-worst* survivor selection strategie
 * **Stopping criterion**. One of the most frequently used stopping criteria are
 the execution time or the number of evaluations involving the objective functions
 of the problem being solved.
+
+## Parent Selection Mechanisms
+
+The main aim of the parent selection strategy is to select the individuals from
+the parent population that are going to reproduce in order to generate the offspring.
+Usually, these strategies are based on the fitness assigned to every individual. Hence,
+the better the fitness of an individual, the greater its likelihood of being selected.
+*Selection pressure* is the degree to which selection emphasises the fittest individuals,
+and it is used by the parent selection and the survivor selection mechanisms in
+order to guide the search procedure towards more promising regions. The higher
+the selection pressure, the higher the probability that the fittest individuals survive.
+Nevertheless, some individuals with a poor fitness should be considered for their
+selection, because they might contribute with their genetic material to guide the
+search process to unexplored areas where the global optimum could be found. The
+fitness can be assigned in two different ways:
+
+* *Direct fitness assignment*. The fitness values are directly associated with individuals.
+* *Rank-based fitness assignment*. Each individual in the population is assigned
+a rank, with this rank generally depending on its fitness value. For instance,
+suppose a list in which individuals are sorted in descending order depending on
+their fitness values. Hence, an individual is associated with its corresponding
+rank in this list.
+
+There exist different types of parent selection mechanisms. Some of them are based
+on a direct fitness assignment, while other approaches are based on a rank-based
+fitness assignment in order to carry out the selection. The most important ones
+are Fitness Proportional selection, also called Roulette Wheel selection, Stochastic
+Universal Sampling, Rank-based selection, and Tournament selection [109].
+
+In this course, we will focus on tournament selection, which selects one individual
+from the parent population. If `n` parents have to be selected, the
+operator has to be applied `n` times. Tournament selection consists of two main steps.
+Firstly, `k` individuals are randomly selected from the current parent population using
+a uniform distribution. This random selection can be performed with replacement
+or without replacement. If no replacement is considered, the `k` selected individuals
+are discarded from subsequent tournaments, whereas with replacement, the `k` selected
+individuals might be randomly selected again in future tournaments. In the
+second step, a probability `p` is used to determine the winner of the tournament from
+among the `k` possible candidates. The value of `p` represents the probability that the
+fittest individual from among the `k` possible candidates will win the tournament. If
+a deterministic tournament is carried out (`p = 1`) the fittest individual, i.e. the one
+with the best fitness, is always selected as the winner of the tournament. However,
+stochastic variants of this selection operator can be defined by letting `p < 1`.
+
+In our particular case, we will consider a deterministic binary tournament (`k = 2`)
+as the parent selection strategy [109]. Whether replacement is used or not will
+depend on the specific EA. The following figure shows its operation.
+
+![Parent selection based on a deterministic binary tournament](img/tournament.png)
+
+It can be observed how each circle represents an individual and the corresponding number
+refers to its fitness value. In this example, the higher the fitness value, the fitter
+the individual. One of the main benefits of tournament selection is that it does not
+require any global knowledge about the population, since it is based on a direct
+fitness assignment. As a result, it is conceptually simple and easy to implement.
+Additionally, the selection pressure can be controlled by means of the tournament
+size `k`. The larger the tournament size, the higher the number of randomly picked
+individuals, and therefore the lower the probability that an individual with a poor
+fitness will be selected. Thus, as the tournament size increases, the selection
+pressure grows.
