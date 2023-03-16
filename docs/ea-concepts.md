@@ -42,10 +42,10 @@ if a particular solution satisfies said optimality condition. Both functions, ho
 are usually identical [70], at least in the single-objective case. Hence, an objective
 function assigns a fitness value to every individual. This fitness value measures the
 ability of the corresponding individual to survive and reproduce in the *environment*,
-i.e. whether the solution is appropriate for the optimisation problem at hand. We
-should note that herein direct encoding of the individuals is always used. In addition,
-genotypes consist of a unique chromosome. Consequently, the terms genotype and chromosome
-refer to the internal representation of an individual.
+i.e. whether the solution is appropriate for the optimisation problem at hand. In this
+course, something common will be to adopt a direct encoding of the individuals. In addition,
+genotypes will usually consist of a unique chromosome. Consequently, we will use
+the terms genotype and chromosome to refer to the internal representation of an individual.
 
 ```text
 1: Initialisation. Generate the initial parent population.
