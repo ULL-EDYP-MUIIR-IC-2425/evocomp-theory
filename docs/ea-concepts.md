@@ -140,22 +140,22 @@ fitness assignment in order to carry out the selection. The most important ones
 are Fitness Proportional selection, also called Roulette Wheel selection, Stochastic
 Universal Sampling, Rank-based selection, and Tournament selection [109].
 
-In this course, we will focus on tournament selection, which selects one individual
-from the parent population. If `n` parents have to be selected, the
-operator has to be applied `n` times. Tournament selection consists of two main steps.
-Firstly, `k` individuals are randomly selected from the current parent population using
-a uniform distribution. This random selection can be performed with replacement
+*Tournament selection* is, with no doubt, the parent selection strategy most widely used.
+This operator selects one parent, and as a result, if `n` parents have to be selected,
+the operator has to be applied `n` times. Tournament selection consists of two main steps.
+Firstly, `k` individuals are randomly selected from the current parent population using a
+uniform distribution. This random selection can be performed with replacement
 or without replacement. If no replacement is considered, the `k` selected individuals
 are discarded from subsequent tournaments, whereas with replacement, the `k` selected
 individuals might be randomly selected again in future tournaments. In the
 second step, a probability `p` is used to determine the winner of the tournament from
 among the `k` possible candidates. The value of `p` represents the probability that the
 fittest individual from among the `k` possible candidates will win the tournament. If
-a deterministic tournament is carried out (`p = 1`) the fittest individual, i.e. the one
+a deterministic tournament is carried out (`p = 1`), the fittest individual, i.e. the one
 with the best fitness, is always selected as the winner of the tournament. However,
 stochastic variants of this selection operator can be defined by letting `p < 1`.
 
-In our particular case, we will consider a deterministic binary tournament (`k = 2`)
+Something very common is to consider a deterministic binary tournament (`p = 1; k = 2`)
 as the parent selection strategy [109]. Whether replacement is used or not will
 depend on the specific EA. The following figure shows its operation.
 
@@ -173,3 +173,4 @@ fitness will be selected. Thus, as the tournament size increases, the selection
 pressure grows.
 
 ## Crossover operators
+
