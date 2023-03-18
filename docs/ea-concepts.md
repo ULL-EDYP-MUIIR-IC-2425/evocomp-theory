@@ -24,8 +24,6 @@ individuals.
 | Allele                         | Value of a decision variable              |
 | Locus                          | Position of a decision variable           |
 
-<br/>
-
 Continuing with metaphor between an evolutionary process and the resolution of
 an optimisation problem (see Table above ) a *structure* or an *individual* is an encoded
 solution to some problem. The codification of an individual or its internal representation
@@ -186,10 +184,12 @@ of features that belong to both parents.
 * **Validity**. The crossover should be able to produce valid offspring, i.e. solutions
 that belong to the feasible region of the optimisation problem in question.
 
-A crossover operator is usually applied by means of a crossover rate $p_c$. Examples of crossovers
-are:
+A crossover operator is usually applied by means of a crossover rate $p_c \in [0, 1]$, which
+usually takes a large number.
 
-* **Uniform Crossover** (UX). This crossover works by treating every gene independently and
+### Uniform Crossover (UX)
+
+This crossover works by treating every gene independently and
 randomly selecting from which of the two parents a particular gene is inherited. To do so,
 first a vector $R = (r_1, \ldots, r_D)$ with $D$ random values $r_i \in [0, 1]$ is generated
 using a uniform distribution, where $D$ is the number of genes in a chromosome. Second,
@@ -201,7 +201,9 @@ discrete chromosomes.
 
 ![Operation of the Uniform Crossover](img/ux_operator.png)
 
-* **One Point Crossover** (OPX). First, this operator randomly chooses a locus from the chromosome
+### One Point Crossover (OPX)
+
+First, this operator randomly chooses a locus from the chromosome
 using a uniform distribution. Both parents are then split at this point, thus yielding
 two offspring by the exchange of the parents' tails. It can be used with binary string,
 real-valued, and discrete chromosomes.  However, its main drawback is that it suffers
@@ -210,7 +212,9 @@ to be inherited together by the offspring.
 
 ![Operation of the One Point Crossover](img/opx_operator.png)
 
-* **Simulated Binary Crossover** (SBX). This operator is classified as a parent-centric crossover.
+### Simulated Binary Crossover (SBX)
+
+This operator is classified as a parent-centric crossover.
 With parent-centric crossover operators, offspring are generated closer to their parents.
 Particularly, this operator simulates the operation of the \ac{opx} operator when it is applied
 to binary string representations. However, the SBX operator was specifically designed to deal
@@ -255,3 +259,87 @@ alleles of the parents' genes without performing the aforementioned procedure. A
 distribution index $\eta = 5$ is usually applied.
 
 ## Mutation operators
+
+Besides the crossover operator, another widely applied variation approach can be used in the
+form of a mutation operator. The main difference with crossover operators is that mutation operators are
+unary, i.e. they produce a single offspring starting from a unique parent.
+In general, $p_m$ refers to the mutation probability applied to every gene in a chromosome,
+and it is also called *mutation rate*. $p_m$ might also refer to the mutation probability for a unique
+gene, however. Mutation operators are used to effect small changes in the selected individuals.
+This is why they are usually applied with low values for $p_m$. Otherwise, mutation operators
+might produce a highly disruptive effect. One of the most common practices is to assign the value
+$1/D$ to the probability $p_m$, $D$ being the number of genes in a chromosome.
+In this way, a single gene is mutated on average. The most important aspects which must be considered
+during the design of a mutation operator are:
+
+* **Ergodicity**. A mutation operator should be able to produce every solution from the search space.
+
+* **Validity**. The offspring generated should be a valid solution belonging to the feasible region
+of the search space.
+
+* **Locality**. Locality refers to the effect produced on the phenotype when the genotype is altered.
+If small changes are performed at the genotype level, small changes should be produced at the phenotype
+level. This is also known as strong locality.  In contrast, if a small change is produced in the
+genotype that results in a large modification in the phenotype, then the locality is weak. Strong
+locality is a desirable feature in a mutation operator. In cases where a direct encoding is used,
+locality is ensured if small changes are carried out by the mutation operator.
+
+### Bit Flip Mutation (BFM)
+
+This mutation operator, which is suitable for binary string chromosomes, allows an offspring to be
+obtained by flipping the alleles of the parent's genes. Every gene in the parent is mutated with a
+probability $p_m$. In cases where the gene of the parent takes the value zero, the corresponding
+gene of the offspring will be assigned a one, and vice-versa. Only two bits are mutated due to $p_m$.
+An example is graphically shown in the next figure.
+
+![Operation of the bit flip mutation](img/bit_flip.png)
+
+### Uniform Mutation (UM)
+
+The UM operator was specifically designed to deal with real-valued representations. Given a gene
+$x_i$ of the parent $X = (x_1, \ldots, x_D)$, where $D$ is the number of genes in the chromosomes,
+it is mutated to obtain the gene $z_i$ of the offspring $Z = (z_1, \ldots, z_D)$ as follows.
+In the first place, a value $\mu_i \in [0, 1]$ is randomly generated by means of a uniform
+distribution. Afterwards, the mutated gene $z_i$ of the offspring is given by:
+
+```math
+z_i = \mu_i \cdot (b_i - a_i) + a_i
+```
+
+Values $a_i$ and $b_i$ respectively are the minimum and maximum values that can be assigned to the gene $i$.
+It is important to note that two different variants of the UM operator are usually considered.
+The first one mutates every parent gene with probability $p_m$, while the second version mutates
+a unique gene with probability $p_m$.
+
+### Polynomial Mutation (PM)
+
+As in the case of the UM operator, the PM operator is also appropriate for real-valued chromosomes.
+Given a parent $X = (x_1, \ldots, x_D)$ where $D$ is the number of genes in a chromosome, the gene
+$x_i$ is mutated to obtain the gene $z_i$ belonging to the offspring $Z = (z_1, \ldots, z_D)$ as follows:
+
+```math
+z_i = x_i + (b_i - a_i) \cdot \delta_i
+```
+
+Above, $a_i$ and $b_i$ are the lower and upper bounds that determine the possible values that can be
+assigned to the gene $i$. Moreover, the value of $\delta_i$ can be calculated from the polynomial
+probability distribution:
+
+```math
+P(\delta) = 0.5 \cdot (\eta + 1) \cdot (1 - |\delta|)^{\eta}
+```
+
+```math
+\delta_i = \left\{ \begin{array}{ll}
+                       (2 \cdot \mu_i)^{1 \over {\eta + 1}} - 1       & if \ \mu_i < 0.5 \\
+                        1 - [2 \cdot (1 - \mu_i)]^{1 \over {\eta + 1}} & if \ \mu_i \geq 0.5
+                   \end{array} \right.
+```
+
+$\mu_i$ is a random number that is generated in the range $[0, 1]$ using a uniform distribution,
+while $\eta$ denotes the distribution index. We should note that two different versions of the
+PM operator are applied herein. The first variant mutates every parent gene with probability
+$p_m$, whereas the second variant mutates a unique parent gene with probability $p_m$. Finally,
+a distribution index $\eta = 20$ is always used with both versions.
+
+## Survivor selection mechanisms
