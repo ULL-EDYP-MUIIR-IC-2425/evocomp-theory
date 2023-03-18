@@ -342,4 +342,34 @@ PM operator are applied herein. The first variant mutates every parent gene with
 $p_m$, whereas the second variant mutates a unique parent gene with probability $p_m$. Finally,
 a distribution index $\eta = 20$ is always used with both versions.
 
-## Survivor selection mechanisms
+## Survivor selection methods
+
+As its name indicates the survivor selection scheme is responsible for choosing the individuals from
+among the parents and the offspring that will form a part of the parent population for the next
+generation. Examples of survivor selection methods are:
+
+* **Steady-State Survivor Selection**. In the case of this survivor selection strategy, a single
+offspring is generated in every generation. If no individual from the parent population is worse
+than the new offspring, the latter is discarded. In contrast, if several individuals belonging to
+the parent population are worse than the new offspring, the worst one is replaced by the new offspring.
+
+* **Elitism-based Generational Survivor Selection**. In every generation, $N - 1$ offspring are
+generated starting from a parent population with $N$ members. Then, all parents, except the
+fittest one, are discarded and replaced by the new offspring. This approach can be used without
+elitism. In the above case, the whole offspring population replaces the parent population.
+
+* **Replace Worst Survivor Selection**. This survivor selection mechanism selects the $N$ fittest
+individuals from among $N$ parents and $N$ new offspring produced in every generation. This survivor
+selection approach was firstly used with Evolutionary Programming. If ES-like nomenclature is used,
+then this scheme is a $(\mu + \lambda)$ selection method, where $\mu = \lambda = N$.
+
+When considering these three schemes, we see that all of them allow *overlapping-generation* EAs
+to be implemented. This means that survivors are selected from among parents and offspring,
+instead of only choosing survivors from the offspring population, as is the case with
+*non-overlapping-generation* EAs. Examples of non-overlapping EAs would be the traditional
+GA based on a pure generational survivor selection operator or the $(\mu, \lambda)$-ES, among others.
+The selection pressure in an overlapping-generation EA is much higher than in the
+non-overlapping-generation version of the same EA. This is because in the former EA, the number of
+possible candidates to be selected is usually larger than in the latter EA. Additionally, as the
+evolutionary procedure progresses, the individuals become increasingly competitive in
+overlapping-generation EAs.
