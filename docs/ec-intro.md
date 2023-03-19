@@ -3,7 +3,7 @@
 Early work on Evolutionary Computation (EC) was based on the application of evolutionary
 systems such as optimisation methods, feedback-control approaches, or automatic tools to
 generate computer programs. From now on, we will use the term evolutionary system to
-refer to a Darwinian evolutionary system, which consists of the following features [1]:
+refer to a Darwinian evolutionary system, which consists of the following features:
 
 * There exists a population of individuals which compete for limited resources.
 * Due to the birth and death of individuals, the population changes dynamically.
@@ -12,25 +12,24 @@ refer to a Darwinian evolutionary system, which consists of the following featur
 as variational inheritance.
 
 One of the first studies that influenced the emergence of EC was provided by Sewell
-Wright in the 1930s [2]. Wright explained evolution as a process where the genetic
+Wright in the 1930s. Wright explained evolution as a process where the genetic
 information of species is continuously changing by a trial and error mechanism. The
 effect of this procedure is to optimise the adaptation of species to their environment.
 During the same period, Walter Cannon also noted that natural evolution
-was a learning process that proceeds by random trial and error [3]. Nevertheless,
+was a learning process that proceeds by random trial and error. Nevertheless,
 it was not until the late 1950s that Hans Bremermann proposed the relationship between
-evolution and mathematical optimisation [4, 5]. Hence, Bremermann can be
+evolution and mathematical optimisation. Hence, Bremermann can be
 considered as one of the first practitioners of EC in the field of optimisation. Nowadays,
 optimisation continues to be the largest area of application of EC. Other
 early works were based on the usage of evolutionary systems as feedback-control
 approaches, which altered their responses dynamically depending on the feedback
 obtained from the system being controlled. From this point of view, an example was
-the usage of an evolutionary system to evolve the control circuits of a robot [6].
+the usage of an evolutionary system to evolve the control circuits of a robot.
 Finally, evolutionary systems were also used in an attempt to generate computer
 programs automatically. An example of this type of application was the design of
-a “Learning Machine” that evolved sets of computer programs [7]. All this early
+a “Learning Machine” that evolved sets of computer programs. All this early
 research work was the origin of several sub-areas of EC, like Evolutionary Programming (EP),
-Evolution Strategies (ES), and Genetic Algorithms (GAs). A deeper insight into the origins
-of EC can be found in [8].
+Evolution Strategies (ES), and Genetic Algorithms (GAs).
 
 In the 1960’s, the availability of "cheap" computers boosted the idea of implementing
 evolutionary systems as computational algorithms to solve complex problems, thus
@@ -38,16 +37,16 @@ triggering a revolution in the field of EC. Among the most important contributio
 were the ideas put forth by Rechenberg and Schwefel, Fogel, and Holland:
 
 * Rechenberg and Schwefel formulated some ideas on how evolutionary processes
-could be used to deal with real-valued optimisation problems [9]. ES were
+could be used to deal with real-valued optimisation problems. ES were
 born from these ideas.
 * Fogel’s research work was based on applying the ideas of evolutionary processes
-to the field of artificial intelligence [10]. His first works were based on
+to the field of artificial intelligence. His first works were based on
 representing intelligent agents as finite state machines, which were evolved to
 even more intelligent agents. His ideas allowed EP methods to emerge.
 * Holland started to apply evolutionary processes so as to implement problem-independent
 robust adaptive systems, whose decisions were carried out by taking
 into consideration the feedback received from interacting with a particular
-environment [11]. These ideas set the stage for the modern-day GAs.
+environment. These ideas set the stage for the modern-day GAs.
 
 Afterwards, the aim of most research activities during the 1970’s was twofold.
 Firstly, to characterise the behaviour of the three aforementioned approaches, and
@@ -74,7 +73,7 @@ next iteration. In order to obtain the offspring, a mutation operator based on a
 Gaussian distribution with a mean equal to zero and a standard deviation equal
 to σ (G(0, σ)) was applied. Subsequently, an adaptive variant of said mutation
 operator was proposed. The value of σ was adapted through the use of the famous
-“1/5 rule” proposed by Rechenberg [12].
+“1/5 rule” proposed by Rechenberg.
 
 In GAs, the individuals were represented by means of a binary string. Variation
 operators (crossover and mutation) were applied to obtain N offspring starting
@@ -102,8 +101,8 @@ similar happened, since they were widely applied to different optimisation probl
 The most common difficulties that emerged from the application of GAs involved
 the convergence to global optima and stagnation in sub-optimal regions. As a result,
 different solutions were proposed, such as the use of tournament selection as
-a novel parent selection mechanism [13], or the use of elitism in the survivor selection
-methods [14]. Another important topic of research was the modification of
+a novel parent selection mechanism, or the use of elitism in the survivor selection
+methods. Another important topic of research was the modification of
 the internal representation of individuals for GAs, by experimenting with other binary
 representations, or by changing the original representation based on a binary
 string for a real-valued representation. Moreover, some research topics remained
@@ -122,69 +121,11 @@ Computation was reached, and the first journal on the subject, also called Evolu
 Computation, emerged. Due to this exchange of ideas, different modifications at the
 implementation level were investigated for the canonical EAs. In the case
 of ES, different crossover operators that improved the performance of this EA were
-proposed [15]. With regard to GAs, the use of problem-dependent representations
-and operators improved the behaviour of these types of algorithms [16]. Finally,
+proposed. With regard to GAs, the use of problem-dependent representations
+and operators improved the behaviour of these types of algorithms. Finally,
 with the incorporation of internal representations and operators from the field of
 ES, the application of EP was extended to other areas such as optimisation. As a
-result, several novel EAs, like Genetic Programming (GP) [17], were born. Moreover,
+result, several novel EAs, like Genetic Programming (GP), were born. Moreover,
 many of the fundamental assumptions and underlying theories were revised in order to
 strengthen and generalise the basis for the different paradigms based on EAs.
 Finally, by the late 1990’s the field of EC had become a mature scientific discipline.
-
-## Bibliography
-
-[1] K. A. D. Jong. Evolutionary computation - a unified approach. MIT Press,
-2006.
-
-[2] S. Wright. The roles of mutation, inbreeding, crossbreeding and selection in
-evolution. In Proceedings of the VI International Congress of Genetrics, pages
-356–366, 1932.
-
-[3] W. B. Cannon. The Wisdom of the Body. The Norton Library, 1932.
-
-[4] H. J. Bremermann. The evolution of intelligence. The nervous system as a
-model of its environment. Technical Report 1, Contract No. 477(17), Department
-of Mathematics, University of Washington, Seattle, July 1958.
-
-[5] H. J. Bremermann. Optimization through evolution and recombination. In
-M. C. Yovits, G. T. Jacobi, and G. D. Goldstein, editors, Self-Organizing
-Systems, pages 93–106. Spartan Books, Washington, D.C., 1962.
-
-[6] G. Friedman. Select feedback computers for engineering synthesis and nervous
-system analogy. Master’s thesis, University of California, Los Angeles, USA,
-1956.
-
-[7] R. M. Friedberg. A Learning Machine: Part I. IBM Journal of Research and
-Development, 2(1):2–13, 1958.
-
-[8] D. B. Fogel. Evolutionary Computation: The Fossil Record. Wiley-IEEE Press,
-1st edition, 1998.
-
-[9] I. Rechenberg. Cybernetic solution path of an experimental problem. In
-Library Translation 1122, Farnborough: Royal Aircraft Establishment, 1965.
-
-[10] L. J. Fogel, A. J. Owens, and M. J. Walsh. Artificial Intelligence through
-Simulated Evolution. Wiley, Chichester, UK, 1966.
-
-[11] J. H. Holland. Outline for a logical theory of adaptive systems. J. ACM,
-9(3):297–314, July 1962.
-
-[12] I. Rechenberg. Evolutionsstrategie: optimierung technischer systeme nach
-prinzipien der biologischen evolution. Frommann-Holzboog-Verlag, Stuttgart,
-1973.
-
-[13] D. E. Goldberg. Genetic Algorithms in Search, Optimization and Machine
-Learning. Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA,
-1st edition, 1989.
-
-[14] K. A. De Jong. An analysis of the behavior of a class of genetic adaptive
-systems. PhD thesis, University of Michigan, Ann Arbor, MI, USA, 1975.
-
-[15] T. Bäck and H.-P. Schwefel. An overview of evolutionary algorithms for parameter
-optimization. Evol. Comput., 1(1):1–23, Mar. 1993.
-
-[16] Z. Michalewicz. Genetic Algorithms + Data Structures = Evolution Programs.
-Springer Berlin Heidelberg, 1996.
-
-[17] J. R. Koza. Genetic Programming: On the Programming of Computers by
-Means of Natural Selection. MIT Press, Cambridge, MA, USA, 1992.

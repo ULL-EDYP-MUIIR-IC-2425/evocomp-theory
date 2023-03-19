@@ -1,4 +1,4 @@
-# Basic concepts about Evolutionary Algorithms
+# Basic concepts about evolutionary algorithms
 
 This section provides a detailed discussion of the basic terms and concepts that
 different variants of these types of approaches share. EAs are a family of

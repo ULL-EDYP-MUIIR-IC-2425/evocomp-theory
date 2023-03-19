@@ -10,7 +10,7 @@ dealing with optimisation problems is provided.
 
 Optimisation is one of the most important topics for a wide range of fields in science
 and technology, such as computer science, operational research, and artificial
-intelligence [75], as well as in other areas like finance, business, and medicine [211].
+intelligence, as well as in other areas like finance, business, and medicine.
 Given an optimisation problem, there exist different feasible solutions, and therefore
 the main aim of optimisation is to find the best possible solution to a problem
 from among all feasible solutions. Hence, solving an optimisation problem requires
@@ -19,7 +19,7 @@ the same time satisfying certain constraints.
 
 In order to obtain a solution for an optimisation problem, several decisions involving
 the problem domain must be made. For example, consider a variant of the knapsack
-problem [227, 235] in which a set of items, each with its corresponding profit and
+problem in which a set of items, each with its corresponding profit and
 weight, is given. The optimisation problem consists of deciding which items from
 the set of candidate items will be stored into the knapsack so that the global profit
 is maximised, while at the same time satisfying the constraint of maximum weight
@@ -41,8 +41,7 @@ a single-objective variant of the knapsack problem is addressed, whereas if mult
 knapsacks are taken into account, each of them with its associated function, a
 multi-objective variant of the problem is defined.
 
-The single-objective optimisation problem, as described in Definition 1 [70], can be
-handled using a wide variety of optimisation schemes.
+The single-objective optimisation problem can be handled using a wide variety of optimisation schemes.
 
 A general **single-objective optimisation problem** is defined as minimising (or
 maximising) $f(x)$ subject to $g_{i}(x) \leq 0$, $i = \{1, \ldots, m\}$ and
@@ -59,7 +58,7 @@ and its constraints, i.e. $\Omega$ is the set that determines the {\it feasible 
 The process of finding the global optimum---or global optima---of any function is referred to as
 *Global Optimisation*. From now on, and without loss of generality, a single-objective optimisation
 problem to be minimised will be considered. Taking this into account, the global minimum of a
-single-objective problem [16] is defined as follows.
+single-objective problem is defined as follows.
 
 Given a function $f: \Omega \subseteq \mathbb{R}^{n} \rightarrow \mathbb{R}$,
 $\Omega \neq \emptyset$ for $x^\* \in \Omega$ the value $f^{\*} \stackrel{\vartriangle}{=} f(x^{*}) > -\infty$ is called a **global minimum**
@@ -78,8 +77,7 @@ exist for a single-objective optimisation problem.  The aim of obtaining the glo
 
 A wide range of optimisation schemes has been designed for dealing with optimisation
 problems.  These optimisation schemes can be classified using different taxonomies.
-The classification proposed in [328] is considered and exposed herein.
-It differentiates between  *exact algorithms* and *approximate algorithms*.
+One of the most frequently used differentiates between  *exact algorithms* and *approximate algorithms*.
 In order to use this classification, some notions regarding complexity theory are
 first given in this section.
 Among the approximate algorithms, *meta-heuristics* emerge as general optimisation
@@ -102,7 +100,7 @@ A decision problem is a special type of computational problem whose answer is
 either "yes" or "no". Decision problems can be *decidable* or *undecidable*.
 The latter category includes problems for which an algorithm that solves
 them will never exist, even having an unlimited amount of computational resources
-and time [324]. An example of an undecidable problem is the *halting problem* [334].
+and time. An example of an undecidable problem is the *halting problem*.
 Determining the resources required by algorithms and problems is important.
 This is precisely the goal of complexity analysis.
 
@@ -116,12 +114,12 @@ required to solve a problem whose size is equal to $n$, and is usually defined
 considering the worst-case analysis. Knowing the exact number of steps is not necessary,
 but an asymptotic bound of this number is required.
 
-The $O$-notation [39] is one of the most frequently used when analysing algorithms.
+The $O$-notation is one of the most frequently used when analysing algorithms.
 It is based on the asymptotic analysis and it can be used to compute the time and/or
 space complexity of an algorithm. The asymptotic analysis of algorithms allows
 characterising the growth rate of their complexity as a function of the problem size.
 It is important to note that there exist two other well-known notations for analysing
-algorithms. They are the $\Omega$-notation and the $\Theta$-notation [39].
+algorithms. They are the $\Omega$-notation and the $\Theta$-notation.
 
 If we consider the $O$-notation, an algorithm has a complexity
 $f(n) = O(g(n))$ if there exist positive constants $n_0$ and $c$ such
@@ -157,13 +155,13 @@ A deterministic algorithm is polynomial for a decision problem $A$ if its comple
 assuming the worst-case, is bounded by a polynomial function $p(n)$ where $n$ is the
 input size of a given instance $\alpha$. Examples of problems belonging to the
 complexity class $P$ are minimum spanning tree, shortest path problems,
-and maximum flow networks, among others [74].
+and maximum flow networks, among others.
 
 The **complexity class NP** contains all decision problems which can be solved
 by a non-deterministic Turing machine in polynomial time.
 
 We should note that each decision problem in $P$ is also a member of the class $NP$.
-However, whether or not $P = NP$ is an open research question [72].
+However, whether or not $P = NP$ is an open research question.
 In other words, it has been shown that for every decision problem belonging to
 the class $P$ there exists a non-deterministic Turing machine that can solve it
 in polynomial time. However, it is not known whether for every decision problem
@@ -203,7 +201,7 @@ $NP$-hard problems usually require exponential-time algorithms (unless $P = NP$)
 order to obtain the optimal solutions.
 Most real complex applications are categorised as $NP$-hard optimisation problems.
 Examples of $NP$-hard problems are scheduling problems, routing and covering problems,
-or knapsack and cutting problems, among others [74].
+or knapsack and cutting problems, among others.
 
 Depending on a problem's complexity, it can be solved by *exact algorithms* or
 by *approximate algorithms*. Exact approaches are able to obtain solutions
@@ -217,7 +215,7 @@ high-quality solutions, even optimal ones, in a reasonable time. However,
 using approximate algorithms does not guarantee that the optimal
 solution will be found.
 
-The next figure shows a possible taxonomy [328], which classifies
+The next figure shows a possible taxonomy, which classifies
 optimisation methods into exact and approximate schemes.
 
 ![Classification of optimisation methods](img/opt_sch_taxonomy.png)
@@ -225,18 +223,18 @@ optimisation methods into exact and approximate schemes.
 ### Exact algorithms
 
 In the class of exact approaches, the following examples of classical methods can be
-found [328]: *dynamic programming*, *branch and bound methods*,
+found: *dynamic programming*, *branch and bound methods*,
 *A\* search methods*, and *constraint programming*, among others.
-All the above approaches can be categorised as *enumerative methods* [272],
+All the above approaches can be categorised as *enumerative methods*,
 where the search for solutions involves exploring the whole feasible region and
 dividing the optimisation problem into smaller sub-problems
-by using the *divide and conquer strategy* [74].
+by using the *divide and conquer strategy*.
 When these sub-problems are solved, their solutions are combined in
 order to obtain the complete solution of the initial problem.
 
 #### Dynamic programming
 
-Dynamic programming [30] is based on dividing a problem into smaller sub-problems
+Dynamic programming is based on dividing a problem into smaller sub-problems
 that are then easier to solve. The optimal solution to the initial problem is thus
 provided by obtaining the optimal solutions for each of the sub-problems, which
 result from a sequence of partial decisions. In dynamic programming, the solution
@@ -247,7 +245,7 @@ do not lead to the optimal solution are pruned.
 
 #### Branch and bound and A* search methods
 
-Branch and bound [197] and A* search [154] methods are based on an implicit
+Branch and bound and A* search methods are based on an implicit
 enumeration of all feasible solutions for a certain optimisation problem. In order
 to explore the feasible region, a search tree with the following characteristics is
 dynamically constructed:
@@ -263,7 +261,7 @@ be searched in order to obtain the optimal solution to the problem.
 
 #### Constraint programming
 
-Constraint programming [291] models optimisation problems as a set of variables
+Constraint programming models optimisation problems as a set of variables
 linked by a set of constraints. The variables take their values from a finite domain
 of integers, with the constraints possibly having mathematical or symbolic forms.
 Constraint programming is based on alternating *propagation* with search methods to
@@ -290,8 +288,8 @@ design of underlying heuristics in order to solve particular optimisation proble
 
 #### Approximation algorithms
 
-Approximation algorithms [159] guarantee that the solutions obtained are close enough to the global optimum.
-An $\epsilon$-approximation algorithm [337] is able to generate an approximate solution $s$ that is not less
+Approximation algorithms guarantee that the solutions obtained are close enough to the global optimum.
+An $\epsilon$-approximation algorithm is able to generate an approximate solution $s$ that is not less
 than $\epsilon$ times the optimum solution $g$. Generally, $\epsilon$ is called the *approximation factor*
 and it is used to establish the relative performance of the algorithm. This approximation factor can be a
 constant or a function which depends on the size of the instance.
@@ -305,7 +303,7 @@ useful for complex applications because the approximated solutions are usually f
 
 A **heuristic** is a criterion, method, or principle for deciding which
 of several alternative courses of action promises to be the most effective
-in order to achieve some goal [280].
+in order to achieve some goal.
 
 In order to design a heuristic, two main requirements have to be considered.
 Firstly, a heuristic has to be simple and require a low consumption of computational
@@ -326,15 +324,15 @@ like restarting, which as its name implies, restarts the heuristic when a certai
 situation is detected, for example, stagnation over a certain number of iterations.
 Finally, it is important to note that the combination of different heuristics might
 improve the solutions obtained. However, this task is not easy and it might yield
-improper results [140].
+improper results.
 
 **Meta-heuristics** are top-level general strategies which guide other low-level heuristics
-to search for feasible solutions in difficult domains [70].
+to search for feasible solutions in difficult domains.
 
 In recent decades, meta-heuristics have been applied to a wide range of
 fields, such as engineering design, aerodynamics, telecommunications, machine learning,
 data mining, system modelling, signal processing, and planning and scheduling problems,
-among others [328].
+among others.
 Meta-heuristics are general purpose strategies that, in general, do not make use of
 problem-dependent information.
 However, they can consider problem specific knowledge in the form of low-level heuristics
@@ -347,7 +345,7 @@ Meta-heuristics must therefore be designed with the aim of exploring the solutio
 in a very efficient manner.
 However, unlike exact or approximation algorithms, meta-heuristics are not able to
 guarantee that global optima or even bounded solutions will be obtained.
-Another drawback, which has become a significant research topic [289, 362],
+Another drawback, which has become a significant research topic,
 is to design effective stopping criteria for meta-heuristics.
 Ideally, the execution would finish when convergence is detected, though actually detecting
 this situation is an arduous task.
@@ -358,7 +356,7 @@ functions of the problem being solved.
 
 One of the main issues that arise when designing meta-heuristics is striking the right
 balance between the exploration of the whole search space (*diversification*) and
-the exploitation of its most promising regions (*intensification*) [141].
+the exploitation of its most promising regions (*intensification*).
 Promising regions are determined by the best solutions found at any given moment of the search
 procedure.
 Diversification tries to ensure that unexplored regions of the search space are
@@ -367,17 +365,17 @@ In contrast, intensification allows for a more exhaustive exploration of the sea
 space and thus aims to improve the quality of the best solutions
 found by examining their neighbours.
 
-A wide variety of meta-heuristics has been proposed [37], with the following being
-among the most important: Ant Colony Optimisation (ACO) [98], Artificial
-Bee Colony (ABC) [182], Artificial Immune System (AIS) [31], Cultural Algorithms
-CAs) [288], Coevolutionary Algorithms (CEAs) [158], Covariance Matrix Adaptation
-Evolution Strategy (CMA-ES) [153], Differential Evolution (DE) [321], Estimation
-of Distribution Algorithms (EDAs) [24], Evolutionary Programming (EP) [122],
-Evolution Strategies (ES) [297], Genetic Algorithms (GAs) [161], Guided Local
-Search (GLS) [343], Genetic Programming (GP) [191], Greedy Randomised Adaptive
-Search Procedure (GRASP) [116], Iterated Local Search (ILS) [237], Particle
-Swarm Optimisation (PSO) [184], Simulated Annealing (SA) [187], Scatter Search
-(SS) [138], Tabu Search (TS) [139], and Variable Neighbourhood Search (VNS) [252].
+A wide variety of meta-heuristics has been proposed, with the following being
+among the most important: Ant Colony Optimisation (ACO), Artificial
+Bee Colony (ABC), Artificial Immune System (AIS), Cultural Algorithms
+CAs), Coevolutionary Algorithms (CEAs), Covariance Matrix Adaptation
+Evolution Strategy (CMA-ES), Differential Evolution (DE), Estimation
+of Distribution Algorithms (EDAs), Evolutionary Programming (EP),
+Evolution Strategies (ES), Genetic Algorithms (GAs), Guided Local
+Search (GLS), Genetic Programming (GP), Greedy Randomised Adaptive
+Search Procedure (GRASP), Iterated Local Search (ILS), Particle
+Swarm Optimisation (PSO), Simulated Annealing (SA), Scatter Search
+(SS), Tabu Search (TS), and Variable Neighbourhood Search (VNS).
 
 In this course we will focus on the study of a family of meta-heuristics that
 includes some of the aforementioned approaches.
@@ -388,9 +386,8 @@ GAs, ES, EP, and GP, although EDAs, DE, CEAs, and CAs are also categorised as
 EAs. Finally, Memetic Algorithms (MAs) are hybrid meta-heuristics that combine
 a population-based approach with a Local Search (LS) procedure.
 
-A large number of taxonomies for classifying meta-heuristics have been devised [61].
-In keeping with the taxonomy described in [328], five different criteria can
-be used to classify meta-heuristics.
+A large number of taxonomies for classifying meta-heuristics have been devised.
+One of the most frequently used, establishes five different criteria to classify meta-heuristics.
 The first one classifies them using *nature-inspired* methods and
 *non-nature-inspired* approaches.
 Most meta-heuristics are inspired by natural
@@ -411,7 +408,7 @@ dynamically extracted from the search process, such as GRASP, or they do,
 like TS for example, which is based on using short-term and long-term memories in order to
 avoid visiting already explored areas of the search space.
 
-The most frequently used classification [37] groups meta-heuristics into
+The most frequently used classification groups meta-heuristics into
 *trajectory-based* approaches and *population-based* methods.
 %
 Trajectory-based schemes, like SA, have to deal with a unique solution during the
@@ -438,12 +435,12 @@ complete solutions are obtained.
 Meta-heuristics have shown great promise to obtain solutions to difficult and complex
 applications in a wide range of fields. However, they exhibit a tendency to
 converge towards local optima for some problems, with the likelihood of this occurrence
-depending on the shape of the fitness landscape [56]. Several methods have
-been designed with the aim of dealing with local optima stagnation [140]. Some
-of the simplest techniques rely on restarting the approach when stagnation is detected
-[232]. In other cases, a component that inserts randomness or noise into
-the search is used [66]. Maintaining some memory, as TS does, in order to avoid
-exploring the same areas several times is also a typical approach [141]. Finally,
+depending on the shape of the fitness landscape. Several methods have
+been designed with the aim of dealing with local optima stagnation. Some
+of the simplest techniques rely on restarting the approach when stagnation is detected.
+In other cases, a component that inserts randomness or noise into
+the search is used. Maintaining some memory, as TS does, in order to avoid
+exploring the same areas several times is also a typical approach. Finally,
 population-based strategies intrinsically try to maintain the diversity of a solution
 set. By recombining these solutions, a wider area of the decision space might be
 explored.
@@ -453,32 +450,32 @@ is one of the most frequent drawbacks to be addressed. It appears when
 every member of the population is in a sub-optimal region of the search space, and
 therefore the optimisation scheme is not able to generate new individuals that outperform
 their corresponding ancestors, i.e. there exists a loss of diversity caused by the use
-of a finite population size. This phenomenon is also known as *genetic drift* [109], and it
+of a finite population size. This phenomenon is also known as *genetic drift*, and it
 is the main reason for the appearance of premature convergence.
 Several methods have been devised for dealing with premature convergence. Most of
-them preserve the diversity in a set of solutions [339]. Some of the most frequently
+them preserve the diversity in a set of solutions. Some of the most frequently
 used are the following:
 
-* Increase the population size to avoid *genetic drift* [109].
-* Apply mating restrictions such as *incest prevention* [308], i.e.,
+* Increase the population size to avoid *genetic drift*.
+* Apply mating restrictions such as *incest prevention*, i.e.,
 keep very similar individuals from mating. This is also known as *speciation*.
-* Perform *cataclysmic mutation* [112], i.e. highly disruptive mutations, when
+* Perform *cataclysmic mutation*, i.e. highly disruptive mutations, when
 diversity has been lost.
-* Perform selection applying *fitness sharing* [269]. In this case, highly similar
+* Perform selection applying *fitness sharing*. In this case, highly similar
 individuals are clustered and penalised by sharing the obtained fitness values among the members
 of the group that lie in the same niche (i.e., those that are very close to each other either
 in the decision space or the objective space).
 * Apply *crowding-based selection* where each offspring replaces similar individuals in the
-parent population [229].
-* Use complex population structures, such as the *island-based model* [19] or the
-*cellular approaches* [265].
+parent population.
+* Use complex population structures, such as the *island-based model* or the
+*cellular approaches*.
 
 Diversity can help the optimisation procedure in two ways. Firstly, there exists a
 relationship between diversity and the diversification and intensification capabilities
-of EAs [339]. Among other advantages, as previously stated, a proper balance between
+of EAs. Among other advantages, as previously stated, a proper balance between
 diversification and intensification might allow the search space to be explored more
 efficiently. Secondly, maintaining proper diversity might allow combining different
-building blocks in crossover operations [176].
+building blocks in crossover operations.
 
 ### Parameter setting
 
@@ -489,13 +486,13 @@ population-based meta-heuristic are chosen poorly, the balance between diversifi
 and intensification might become disproportionate, producing a loss of diversity
 and, as a result, premature convergence. To configure a meta-heuristic, several
 components and/or parameters must be specified. For instance, EAs have different
-components [109], such as the mutation and crossover operators, which must be
+components, such as the mutation and crossover operators, which must be
 defined. In addition, some parameters like the mutation and crossover rates—the
 probabilities used to apply the aforementioned operators—must be also fixed. In
 general, the performance of any meta-heuristic, and consequently the quality of the
 solutions obtained, are highly dependent on these components and parameters. As
 a result, it is vital that the parameters be properly set. In order to completely
-configure a meta-heuristic, two types of information are required [26, 241]:
+configure a meta-heuristic, two types of information are required:
 
 * *Symbolic*, also referred to as *qualitative*, *categoric* or *structure* parameters,
 like the crossover and mutation operators of an EA.
@@ -516,7 +513,7 @@ and therefore optimisation schemes are not able to profit from the definition of
 types of metrics for setting said parameters.
 
 Parameter setting strategies are commonly divided into two categories: *parameter
-tuning* and *parameter control*. In parameter tuning [108], also called offline or endogenous
+tuning* and *parameter control*. In parameter tuning, also called offline or endogenous
 setting, the objective is to identify the best set of parameters for a given
 meta-heuristic. Once a suitable parameter set is identified, an algorithm is executed
 using the selected parameter values, which remain fixed for the full run. Traditionally,
@@ -524,7 +521,7 @@ parameter tuning has involved performing different executions of the same
 meta-heuristic using different parameterisations. Afterwards, the parameterisation
 that provides the best performance, i.e. the best solutions for the optimisation problem
 in question, is selected. The main disadvantages of parameter tuning based on
-this systematic approach are the following [107]:
+this systematic approach are the following:
 
 * Since the parameters interact, systematically testing all of their possible combinations
 is practically impossible.
@@ -537,38 +534,38 @@ to tune them was significant.
 
 In past decades, research into parameter tuning mainly focused on looking for a general
 set of optimal values for the parameters of a specific algorithm, which allowed
-promising results to be obtained across several optimisation problems [88, 144].
+promising results to be obtained across several optimisation problems.
 However, it is now generally accepted by the research community that a single set
 of parameters is unlikely to be optimal across a range of problems and that an
 algorithm has to be specifically configured in order to successfully solve a given optimisation
-problem [19]. In fact, the *No Free Lunch* theorem [353] provided evidence
+problem. In fact, the *No Free Lunch* theorem provided evidence
 from a theoretical point of view that a given optimisation method is not appropriate
 for all optimisation problems. Hence, this has given rise to a significant field
 of research in automated parameter tuning to enable an algorithm to be suitably
 tuned for the optimisation problem at hand. Tuning methods have been applied to
-a large number of meta-heuristics, including AISs [3], GAs [253] GLS [6], MAs [355]
-or SA [3], for instance. Moreover, a wide variety of parameter tuning approaches
-used in different fields have been proposed [108], including the *sampling* [262] and
-*racing* [233] methods. Regardless of the tuning method chosen, it is crucial to recognise
+a large number of meta-heuristics, including AISs, GAs, GLS, MAs or SA, for instance.
+Moreover, a wide variety of parameter tuning approaches
+used in different fields have been proposed, including the *sampling* and
+*racing* methods. Regardless of the tuning method chosen, it is crucial to recognise
 that parameters usually interact in highly non-linear ways, meaning they should
-ideally be tuned simultaneously rather than independently [107, 106]. However, simultaneously
+ideally be tuned simultaneously rather than independently. However, simultaneously
 tuning several parameters requires a huge amount of experimentation
 and is likely to be computationally infeasible. As a result, parameter tuning is often
 performed considering the parameters independently, though this is likely to lead
 to a sub-optimal set of parameters for the reasons given above. Moreover, several
 studies have concluded that the use of a static set of parameters during a complete
-run seems to be inappropriate [13, 14, 15, 84, 107, 106, 157]. In fact, it has been
+run seems to be inappropriate. In fact, it has been
 empirically and theoretically demonstrated that different values of parameters might
-be optimal at different stages of the optimisation process [13, 318]. As a result, it
+be optimal at different stages of the optimisation process. As a result, it
 seems more appropriate to apply strategies that allow the parameter values to adapt
 or change during the course of a run.
 
-This is precisely the goal of parameter control [107], also known as online or exogenous
+This is precisely the goal of parameter control, also known as online or exogenous
 setting, which is based on designing a control strategy that dynamically
 selects the most suitable parameter values to use at every stage of the search process.
-A wide range of parameter control methods has been proposed in the literature
-[107]. They have been successfully applied to different meta-heuristics, such
-as ES [192], DE [282], GAs [118], GRASP [223] or PSOs [357, 361]. Most of them
+A wide range of parameter control methods has been proposed in the literature.
+They have been successfully applied to different meta-heuristics, such
+as ES, DE, GAs, GRASP or PSOs. Most of them
 are tailor-made methods, however, and depend on the specific meta-heuristic and its
 parameters. Thus, it would be desirable to design generic parameter control schemes
 that can be directly applied to different meta-heuristics and/or parameters.
@@ -584,9 +581,8 @@ solutions. However, in the case of approximate algorithms, and particularly when
 meta-heuristics are applied, other indicators have to be considered to measure their
 performance. This is because meta-heuristics do not ensure that the optimal solutions
 will be obtained. Moreover, a large number of meta-heuristics are stochastic
-approaches. Considering the classification carried out in [25], performance metrics
-can be classified based on the following criteria: *quality of the solutions*,
-*computational effort*, and *robustness*.
+approaches. Performance metrics can be classified based on the following criteria:
+*quality of the solutions*, *computational effort*, and *robustness*.
 
 As concerns the quality of the solutions, performance metrics are generally based on
 calculating the distance or the error between the solutions obtained and the optimal
@@ -618,7 +614,7 @@ approach over several runs indicates that it is robust.
 Finally, in order to determine whether the results obtained by different stochastic
 methods present statistically significant differences, an statistical analysis is mandatory.
 For instance, the following statistical procedure could be applied in an effort to
-assign statistical confidence to the results [93, 304]. First a Shapiro-Wilk test is
+assign statistical confidence to the results. First a Shapiro-Wilk test is
 performed to check whether the values of the results follow a normal (Gaussian)
 distribution or not. If so, the Levene test checks for the homogeneity of
 the variances. If samples have equal variances, an Analysis of Variance (ANOVA)

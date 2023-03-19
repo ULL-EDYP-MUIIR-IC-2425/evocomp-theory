@@ -6,4 +6,5 @@ Programming examples are be based on Python.
 
 1. [Optimisation problems and optimisation schemes](opt.md)
 2. [Historical introduction to Evolutionary Computation](ec-intro.md)
-3. [Basic concepts about Evolutionary Algorithms](ea-concepts.md)
+3. [Basic concepts about evolutionary algorithms](ea-concepts.md)
+4. [First example of an evolutionary algorithm](ea-first.md)
