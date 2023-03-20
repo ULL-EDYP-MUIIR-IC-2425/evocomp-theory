@@ -5,7 +5,7 @@ In this section, a basic evolutionary algorithm for solving the
 (KP) is presented.
 
 The KP is a common NP-hard problem and could be categorised as an resource
-allocation problem. Herein, we will address the 0-1 version of the KP, i.e.
+allocation problem. Herein, we will address the 0-1 variant of the KP, i.e.
 objects cannot be divided into fragments. As a result, given an item, it
 can be included into the knapsack (1) or not (0).
 
@@ -13,18 +13,21 @@ Having a set of items, each with a profit and a weight, the objective is to
 maximise the total profit of the items included into the knapsack, while
 satisfying the knapsack maximum capacity constraint.
 
-The reader is referred to this [web KP solver](https://cristianabrante.github.io/GeneticsJsKnapsack/)
-implemented by Cristian Abrante by using the TypeScript library [GeneticsJS](https://geneticsjs.github.io/GeneticsJS/index.html).
+The reader is referred to this
+[web KP solver](https://cristianabrante.github.io/GeneticsJsKnapsack/)
+implemented by Cristian Abrante by using the TypeScript library
+[GeneticsJS](https://geneticsjs.github.io/GeneticsJS/index.html).
 
 ## Individual representation and population initialisation
 
 For the individual representation, i.e. how to encode a solution for the KP, we could
-use an array of 0 and 1 values, to decide if a particular item is included or not
-into the knapsack. A better approach would be to use an array of boolean values.
+use an array of 0 and 1 integer values, to decide if a particular item is included or
+not into the knapsack. A better approach would be to use an array of boolean values,
+however.
 
 As a result, we could write a function in Python that initialises a population of
-individuals, where each individual or solution is represented by the said array of
-booleans.
+individuals, where each individual or solution is represented by an array of
+boolean values.
 
 ```python
 # define the initialisation function
@@ -41,7 +44,9 @@ the population is not filled with `population_size` individuals, a new `solution
 is initialised by randomly selecting the items included into the knapsack. If an item is
 included into the knapsack, a `True` value is used to represent the above. Otherwise, a `False`
 value is assigned. The number of available items is given by `len(weights)`. The weights of
-the items are given by the array `weights`.
+the items are given by the array `weights`, while their profits are given by the array `values`.
+As a result, we could have used `len(values)` instead of using `len(weights)` (both arrays
+should contain the same number of values).
 
 ## Fitness function
 
@@ -64,10 +69,11 @@ a 0 value. The above means that a fitness value equal to 0 will be assigned to t
 corresponding individual. Otherwise, the fitness of the solution will be calculated
 as the sum of the profits (`values`) of those items included into the knapsack.
 
-Since we are interested in maximising the profit, while satisfying the maximum capacity
+Since we are interested in maximising the total profit, while satisfying the maximum capacity
 constraint, the larger the fitness value, the fitter the individual and the better from
 the optimisation perspective. Bearing the above in mind, those individuals with a fitness
-value equal to 0 will be considered as unfeasible.
+value equal to 0 will be considered as unfeasible, since they do not satisfy the maximum
+capacity constraint.
 
 ## Parent selection strategy
 
@@ -110,9 +116,6 @@ It is important to note at this point that, since unfeasible individuals are ass
 equal to 0, their selection probability will be the smallest possible. However, they could be
 selected as parents at some point during the evolutionary process.
 
-Finally, with this parent selection mechanism, could both parents be the same individual? If so,
-how could we modify `select_parents` to avoid that behaviour?
-
 ## Crossover operator
 
 We could use the well-known *One Point Crossover* as one of the variation operators.
@@ -131,8 +134,6 @@ and returns an array with two new children. First of all, it selects the `crosso
 means of a call to the function `random.randint`, which randomly generates an integer value in
 the range $[n, m]$. The crossover point splits each parent into two parts. Then, two children
 (offspring) are produced by crossing both parents' parts.
-
-With this crossover operator, what does happen if both parents are the same individual?
 
 ## Mutation operator
 
@@ -155,4 +156,89 @@ a random number is generated, which if it is lower than the mutation rate, then 
 It can be noted that the larger the mutation rate, the larger the number of genes modified by the
 mutation operator.
 
-What value should we use for the mutation rate if we only want to modify one gene at maximum?
+## Evolutionary approach
+
+In this particular case, since a binary representation is being used, the evolutionary approach
+is a traditional GA.
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+    population = initialize_population()
+    for i in range(num_generations):
+        parents = select_parents(population)
+        children = crossover(parents)
+        population = [mutate(child) for child in children]
+    fitnesses = [fitness(solution) for solution in population]
+    best_fitness = max(fitnesses)
+    best_solution = population[fitnesses.index(best_fitness)]
+    best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+    return (best_solution, best_fitness, best_weight)
+```
+
+It can be noted that it follows the general framework of an EA and makes use of the
+different functions introduced in previous lines. The number of iterations or
+generations performed by the GA has been selected as the stopping criterion.
+At the same time, the GA incorporates a *generational* survivor selection scheme with
+no elitism, i.e. in every generation the whole children population survives for the next
+generation (the whole parent population is discarded). The approach returns the best
+solution found, as well as its fitness and total weight.
+
+In order to run the GA, we could have the following script that uses the functions
+implemented above:
+
+```python
+import random
+
+# define the problem instance
+weights = [10, 20, 30, 40, 50]
+values = [100, 50, 150, 200, 300]
+max_weight = 100
+
+# define genetic algorithm parameters
+population_size = 50
+num_generations = 100
+mutation_rate = 0.01
+
+# run the genetic algorithm and print the result
+best_solution, best_fitness, best_weight = genetic_algorithm()
+print("Best solution:", best_solution)
+print("Best fitness:", best_fitness)
+print("Best weight:", best_weight)
+```
+
+First of all, we define the weights and profits of the set of items that could
+be introduced into the knapsack. The capacity of the knapsack is defined as well.
+Then, the parameters of the GA are set:
+
+* Population size: 50 individuals
+* Stopping criterion: 100 generations
+* Mutation rate: 0.02
+
+Finally, the GA is run by calling function `genetic_algorithm`. It is important to
+note at this point that, since an EA, and particularly, this GA is a stochastic
+approach, different runs will produce different results.
+
+## Exercises
+
+1. If you have knowledge about Object-oriented Programming (OOP) implement the above
+algorithm as a Python class.
+2. With the current parent selection mechanism, could both parents be the same individual? If so,
+how could we modify `select_parents` to avoid that behaviour?
+3. Could you write a function to implement a parent selection mechanism based on a
+binary tournament?
+4. With the current crossover operator, what does happen if both parents are the same individual?
+5. Could you write a function to implement a *Uniform Crossover*?
+6. In the current version of our GA, the crossover operator is always applied, i.e. the
+crossover rate is equal to 1. Sometimes, this is not suitable, so it would be great to
+have a crossover rate that decides if the crossover operator is applied or not. Before
+applying it, a random number in the range $[0, 1]$ must be generated. If the said random
+number is lower than the crossover rate, then the crossover is applied by producing two
+new children. Otherwise, both parents become the new children in the offspring population.
+7. What value should we use for the mutation rate if we only want to modify one gene at maximum?
+By using that value, what does happen with the GA? How could you fix it?
+8. How could you use the number of function evaluations as the stopping criterion in the GA?
+9. How could you incorporate elitism in the survivor selection scheme?
+10. Could you write a version of the GA where a *replace-worst* survivor strategy is considered?
+11. The GA works with an even population size. What set of changes would you incorporate to
+also allow an odd population size?
