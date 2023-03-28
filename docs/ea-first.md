@@ -109,14 +109,14 @@ the addition of all the probabilities should be close to 1.
 
 Once probabilities are calculated, two parents have to be selected. For selecting each of both
 parents, a random number is generated in the range $[0, 1)$ through `random.uniform(0, 1)`.
-If the random number generated is lower than the addition of probabilities of those individuals
-already checked, then the current individual is selected as a parent. As a result, the larger
-the fitness of an individual, the higher their probability of being selected as a parent (it has
-a larger share of the roulette wheel). The above is the reason why this strategy is called
-fitness proportional selection or roulette wheel selection.
+If the random number generated is lower than the cumulative probability of an individual,
+then that individual is selected as a parent. As a result, the larger the fitness of an
+individual, the higher their probability of being selected as a parent (it has a larger share
+of the roulette wheel). The above is the reason why this strategy is called fitness
+proportional selection or roulette wheel selection.
 
-It is important to note at this point that, since unfeasible individuals are assigned a fitness
-equal to 0, their selection probability will be equal to 0 as well.
+It is important to note at this point that, since unfeasible individuals are assigned a
+fitness equal to 0, their selection probability will be equal to 0 as well.
 
 ## Crossover operator
 

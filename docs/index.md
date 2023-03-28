@@ -8,3 +8,4 @@ Programming examples are be based on Python.
 2. [Historical introduction to Evolutionary Computation](ec-intro.md)
 3. [Basic concepts about evolutionary algorithms](ea-concepts.md)
 4. [First example of an evolutionary algorithm](ea-first.md)
+5. [Measuring the performance of an evolutionary algorithm](ea-performance.md)
