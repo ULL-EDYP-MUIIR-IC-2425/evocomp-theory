@@ -25,7 +25,7 @@ individuals.
 | Locus                          | Position of a decision variable           |
 
 Continuing with metaphor between an evolutionary process and the resolution of
-an optimisation problem (see Table above ) a *structure* or an *individual* is an encoded
+an optimisation problem (see Table above) a *structure* or an *individual* is an encoded
 solution to some problem. The codification of an individual or its internal representation
 is known as the *genotype*, which is decoded to obtain the *phenotype*, or
 decoded solution. If a *direct encoding* of the individuals is used, the genotype and
@@ -97,7 +97,7 @@ filled with randomly generated individuals, although more sophisticated
 approaches could also be applied.
 * **Parent selection mechanism**. This method is responsible for selecting the individuals
 from the parent population for the purpose of reproducing. One of the most
-frequently used strategies is the  well-known *Binary Tournament* operator.
+frequently used strategies is the well-known *Binary Tournament* operator.
 * **Variation operators**. The objective of the variation operators is to generate
 offspring starting from the mating pool. The most widely applied variation approaches
 are the crossover operator, such as the one-point crossover, and mutation operators,
@@ -106,8 +106,8 @@ like the bit-flip mutation.
 mechanism is responsible for choosing, from among the current parents
 and offspring, the individuals that will survive for the next generation. Examples
 could be the *generational* and the *replace-worst* survivor selection strategies.
-* **Stopping criterion**. One of the most frequently used stopping criteria are
-the execution time or the number of evaluations involving the objective functions
+* **Stopping criterion**. Some of the most frequently used stopping criteria are
+the execution time, the number of generations, and the number of evaluations involving the objective functions
 of the problem being solved.
 
 ## Parent selection mechanisms
@@ -216,7 +216,7 @@ to be inherited together by the offspring.
 
 This operator is classified as a parent-centric crossover.
 With parent-centric crossover operators, offspring are generated closer to their parents.
-Particularly, this operator simulates the operation of the \ac{opx} operator when it is applied
+Particularly, this operator simulates the operation of the OPX operator when it is applied
 to binary string representations. However, the SBX operator was specifically designed to deal
 with real-coded chromosomes. It is based on a probability distribution function that can be
 adapted to the problem at hand by means of the distribution index $\eta$:
@@ -338,9 +338,9 @@ P(\delta) = 0.5 \cdot (\eta + 1) \cdot (1 - |\delta|)^{\eta}
 
 $\mu_i$ is a random number that is generated in the range $[0, 1]$ using a uniform distribution,
 while $\eta$ denotes the distribution index. We should note that two different versions of the
-PM operator are applied herein. The first variant mutates every parent gene with probability
+PM operator are usually considered. The first variant mutates every parent gene with probability
 $p_m$, whereas the second variant mutates a unique parent gene with probability $p_m$. Finally,
-a distribution index $\eta = 20$ is always used with both versions.
+a distribution index $\eta = 20$ is usually applied with both versions.
 
 ## Survivor selection methods
 
