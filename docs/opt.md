@@ -33,8 +33,8 @@ stored or not.
 The quality of a decision vector or solution has to be determined using certain criteria,
 which are expressed as a computable function of the decision variables. Considering
 this function, optimisation problems can be classified as Single-objective Optimisation
-Problems or Multi-objective Optimisation Problems (MOPs). In singleobjective
-optimisation problems a scalar function is defined, while in the multiobjective
+Problems or Multi-objective Optimisation Problems (MOPs). In single-objective
+optimisation problems a scalar function is defined, while in the multi-objective
 field a vector or multiple objective function is applied. In the knapsack
 example, if a unique knapsack is considered, a scalar function is defined, and therefore
 a single-objective variant of the knapsack problem is addressed, whereas if multiple
@@ -53,7 +53,7 @@ It is important to note that $x$ can be a vector of continuous or discrete decis
 Moreover, $g_{i}(x) \leq 0$ and $h_{j}(x) = 0$ are inequality and equality constraints that
 must be satisfied while optimising (minimising or maximising ) $f(x)$.
 Hence, $\Omega$ contains all possible solutions $x$ that can be used to satisfy an evaluation of $f(x)$
-and its constraints, i.e. $\Omega$ is the set that determines the {\it feasible region} of $x$.
+and its constraints, i.e. $\Omega$ is the set that determines the *feasible region* of $x$.
 
 The process of finding the global optimum---or global optima---of any function is referred to as
 *Global Optimisation*. From now on, and without loss of generality, a single-objective optimisation
@@ -68,7 +68,7 @@ if and only if
    \forall x \in \Omega: f(x^{*}) \leq f(x)
 ```
 
-Thus, $x^{\*}$ is called the *global minimum solution* and $f$ is denoted as the {\it objective function}.
+Thus, $x^{\*}$ is called the *global minimum solution* and $f$ is denoted as the *objective function*.
 Note that the inequality in the above equation indicates that several global minimum solutions could
 exist for a single-objective optimisation problem.  The aim of obtaining the global minimum solution
 (or solutions) is therefore known as the *global optimisation problem*.
