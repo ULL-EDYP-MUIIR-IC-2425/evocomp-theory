@@ -77,44 +77,46 @@ capacity constraint.
 
 ## Parent selection strategy
 
-For the parent selection strategy, we could consider a *Roulette Wheel* selection mechanism,
+For the parent selection strategy, we could consider a *roulette wheel* selection mechanism,
 also known as *fitness proportional selection*.
 
 ```python
 # define the parent selection function
-def select_parents(population):
-    fitnesses = [fitness(solution) for solution in population]
+def select_parents(population, fitnesses):
     total_fitness = sum(fitnesses)
     probabilities = [fitness / total_fitness for fitness in fitnesses]
     parents = []
     for i in range(2):
         selected = False
         while not selected:
+            rand = random.uniform(0, 1)
+            accum = 0
             for j in range(len(population)):
-                if random.random() < probabilities[j]:
+                accum += probabilities[j]
+                if rand < accum:
                     parents.append(population[j])
                     selected = True
                     break
     return parents
 ```
 
-Given a `population` of solutions, the function `select_parents` returns an array with
-two solutions representing the selected parents.
+Given a `population` of solutions and the `fitnesses` of those solutions, the function
+`select_parents` returns an array with two solutions representing the selected parents.
 
-First, an array `fitnesses` is initialised by calculating the fitness of every individual
-in the population. Then, an array `probabilities` is computed by dividing the fitness of
-every individual in the population by the sum of fitnesses of all individuals (`total_fitness`).
+First, an array `probabilities` is computed by dividing the fitness of every individual
+in the population by the sum of fitnesses of all individuals (`total_fitness`). Hence,
+the addition of all the probabilities should be close to 1.
 
 Once probabilities are calculated, two parents have to be selected. For selecting each of both
-parents, random numbers are generated in the range $[0, 1)$ through `random.random()`. If the
-random number generated is lower than the selection probability of an individual, then that
-individual is selected as a parent. As a result, the larger the fitness of an individual,
-the higher their probability of being selected as a parent. The above is the reason why this
-strategy is called fitness proportional selection.
+parents, a random number is generated in the range $[0, 1)$ through `random.uniform(0, 1)`.
+If the random number generated is lower than the addition of probabilities of those individuals
+already checked, then the current individual is selected as a parent. As a result, the larger
+the fitness of an individual, the higher their probability of being selected as a parent (it has
+a larger share of the roulette wheel). The above is the reason why this strategy is called
+fitness proportional selection or roulette wheel selection.
 
 It is important to note at this point that, since unfeasible individuals are assigned a fitness
-equal to 0, their selection probability will be the smallest possible. However, they could be
-selected as parents at some point during the evolutionary process.
+equal to 0, their selection probability will be equal to 0 as well.
 
 ## Crossover operator
 
@@ -164,16 +166,15 @@ is a traditional GA.
 ```python
 # define the genetic algorithm
 def genetic_algorithm():
-def genetic_algorithm():
     population = initialize_population()
     for i in range(num_generations):
+        fitnesses = [fitness(solution) for solution in population]
         children_population = []
-        while (len(children_population) < len(population)):
-          parents = select_parents(population)
+        while (len(children_population) < population_size):
+          parents = select_parents(population, fitnesses)
           children = crossover(parents)
-          children = [mutate(child) for child in children]
-          children_population.extend(children)
-        population = children_population        
+          children_population.extend([mutate(child) for child in children])
+        population = children_population
     fitnesses = [fitness(solution) for solution in population]
     best_fitness = max(fitnesses)
     best_solution = population[fitnesses.index(best_fitness)]
@@ -201,9 +202,9 @@ values = [100, 50, 150, 200, 300]
 max_weight = 100
 
 # define genetic algorithm parameters
-population_size = 50
+population_size = 10
 num_generations = 100
-mutation_rate = 0.01
+mutation_rate = 0.1
 
 # run the genetic algorithm and print the result
 best_solution, best_fitness, best_weight = genetic_algorithm()
@@ -216,12 +217,12 @@ First of all, we define the weights and profits of the set of items that could
 be introduced into the knapsack. The capacity of the knapsack is defined as well.
 Then, the parameters of the GA are set:
 
-* Population size: 50 individuals
+* Population size: 10 individuals
 * Stopping criterion: 100 generations
-* Mutation rate: 0.02
+* Mutation rate: 0.1
 
 Finally, the GA is run by calling function `genetic_algorithm`. It is important to
-note at this point that, since an EA, and particularly, this GA is a stochastic
+note at this point that, since an EA, and particularly, this GA, is a stochastic
 approach, different runs will produce different results.
 
 ## Exercises
@@ -241,7 +242,6 @@ applying it, a random number in the range $[0, 1]$ must be generated. If the sai
 number is lower than the crossover rate, then the crossover is applied by producing two
 new children. Otherwise, both parents become the new children in the offspring population.
 7. What value should we use for the mutation rate if we only want to modify one gene at maximum?
-By using that value, what does happen with the GA? How could you fix it?
 8. How could you use the number of function evaluations as the stopping criterion in the GA?
 9. How could you incorporate elitism in the survivor selection scheme?
 10. Could you write a version of the GA where a *replace-worst* survivor strategy is considered?
