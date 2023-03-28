@@ -164,11 +164,16 @@ is a traditional GA.
 ```python
 # define the genetic algorithm
 def genetic_algorithm():
+def genetic_algorithm():
     population = initialize_population()
     for i in range(num_generations):
-        parents = select_parents(population)
-        children = crossover(parents)
-        population = [mutate(child) for child in children]
+        children_population = []
+        while (len(children_population) < len(population)):
+          parents = select_parents(population)
+          children = crossover(parents)
+          children = [mutate(child) for child in children]
+          children_population.extend(children)
+        population = children_population        
     fitnesses = [fitness(solution) for solution in population]
     best_fitness = max(fitnesses)
     best_solution = population[fitnesses.index(best_fitness)]
