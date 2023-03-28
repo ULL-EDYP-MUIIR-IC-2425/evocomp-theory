@@ -248,5 +248,4 @@ new children. Otherwise, both parents become the new children in the offspring p
 10. Could you write a version of the GA where a *replace-worst* survivor strategy is considered?
 11. The GA works with an even population size. What set of changes would you incorporate to
 also allow an odd population size?
-12. Could you test your GA with some hard instances proposed by
-[Pisinger](http://hjemmesider.diku.dk/~pisinger/codes.html)?
+12. Could you test your GA with some [hard instances proposed by Pisinger](http://hjemmesider.diku.dk/~pisinger/codes.html)?
