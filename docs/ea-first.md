@@ -84,7 +84,10 @@ also known as *fitness proportional selection*.
 # define the parent selection function
 def select_parents(population, fitnesses):
     total_fitness = sum(fitnesses)
-    probabilities = [fitness / total_fitness for fitness in fitnesses]
+    if (total_fitness != 0):
+      probabilities = [fitness / total_fitness for fitness in fitnesses]
+    else:
+      probabilities = [1 / len(population) for individual in population]
     parents = []
     for i in range(2):
         selected = False
@@ -104,8 +107,10 @@ Given a `population` of solutions and the `fitnesses` of those solutions, the fu
 `select_parents` returns an array with two solutions representing the selected parents.
 
 First, an array `probabilities` is computed by dividing the fitness of every individual
-in the population by the sum of fitnesses of all individuals (`total_fitness`). Hence,
-the addition of all the probabilities should be close to 1.
+in the population by the sum of fitnesses of all individuals (`total_fitness`). If
+`total_fitness` becomes zero, i.e. all individuals in the current population are unfeasible,
+then the probability assigned to each individual will be the same. In both cases, the addition
+of all probabilities will be close to 1.
 
 Once probabilities are calculated, two parents have to be selected. For selecting each of both
 parents, a random number is generated in the range $[0, 1)$ through `random.uniform(0, 1)`.
@@ -230,8 +235,7 @@ approach, different runs will produce different results.
 1. If you have knowledge about Object-oriented Programming (OOP) implement the above
 algorithm as a Python class.
 2. With the current parent selection mechanism, could both parents be the same individual? If so,
-how could we modify `select_parents` to avoid that behaviour? At the same time, `select_parents`
-could crash if `total_fitness` becomes 0. How could you fix the above?
+how could we modify `select_parents` to avoid that behaviour?
 3. Could you write a function to implement a parent selection mechanism based on a
 binary tournament?
 4. With the current crossover operator, what does happen if both parents are the same individual?
