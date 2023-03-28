@@ -4,7 +4,7 @@ In this section, a basic evolutionary algorithm for solving the
 [Knapsack Problem](https://en.wikipedia.org/wiki/Knapsack_problem#Definition)
 (KP) is presented.
 
-The KP is a common NP-hard problem and could be categorised as an resource
+The KP is a common NP-hard problem and could be categorised as a resource
 allocation problem. Herein, we will address the 0-1 variant of the KP, i.e.
 objects cannot be divided into fragments. As a result, given an item, it
 can be included into the knapsack (1) or not (0).
