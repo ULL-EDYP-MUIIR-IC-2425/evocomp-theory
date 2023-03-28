@@ -230,7 +230,8 @@ approach, different runs will produce different results.
 1. If you have knowledge about Object-oriented Programming (OOP) implement the above
 algorithm as a Python class.
 2. With the current parent selection mechanism, could both parents be the same individual? If so,
-how could we modify `select_parents` to avoid that behaviour?
+how could we modify `select_parents` to avoid that behaviour? At the same time, `select_parents`
+could crash if `total_fitness` becomes 0. How could you fix the above?
 3. Could you write a function to implement a parent selection mechanism based on a
 binary tournament?
 4. With the current crossover operator, what does happen if both parents are the same individual?
@@ -247,3 +248,5 @@ new children. Otherwise, both parents become the new children in the offspring p
 10. Could you write a version of the GA where a *replace-worst* survivor strategy is considered?
 11. The GA works with an even population size. What set of changes would you incorporate to
 also allow an odd population size?
+12. Could you test your GA with some hard instances proposed by
+[Pisinger](http://hjemmesider.diku.dk/~pisinger/codes.html)?
