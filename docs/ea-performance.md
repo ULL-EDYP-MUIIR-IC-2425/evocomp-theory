@@ -50,10 +50,3 @@ Finally, it is worth noting that since the execution time of a particular algori
 depends on the machine that it is run, comparing the running time of different
 approaches executed in machines with different characteristics is unfair.
 
-## Evolution of the mean fitness
-
-
-
-## Evolution of the diversity
-
-## Comparison to other approaches
