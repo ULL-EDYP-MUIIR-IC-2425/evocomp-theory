@@ -41,7 +41,6 @@ num_generations = 1000
 mutation_rate = 0.05
 
 # run the genetic algorithm and print the result
-
 number_rep = 30
 running_times = []
 
@@ -76,7 +75,6 @@ num_generations = 1000
 mutation_rate = 0.05
 
 # run the genetic algorithm and print the result
-
 number_rep = 30
 running_times = []
 
@@ -108,7 +106,6 @@ num_generations = 1000
 mutation_rate = 0.05
 
 # run the genetic algorithm and print the result
-
 number_rep = 30
 running_times = []
 
@@ -144,7 +141,6 @@ num_generations = 1000
 mutation_rate = 0.001
 
 # run the genetic algorithm and print the result
-
 number_rep = 30
 running_times = []
 
@@ -223,7 +219,6 @@ mutation_rate = 0.05
 quality_level = 1428
 
 # run the genetic algorithm and print the result
-
 number_rep = 30
 running_times = []
 
