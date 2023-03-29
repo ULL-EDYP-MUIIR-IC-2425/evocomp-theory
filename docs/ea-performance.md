@@ -215,7 +215,6 @@ max_weight = 970
 
 # define genetic algorithm parameters
 population_size = 100
-num_generations = 1000
 mutation_rate = 0.05
 quality_level = 1428
 
@@ -282,7 +281,6 @@ max_weight = 970
 
 # define genetic algorithm parameters
 population_size = 100
-num_generations = 1000
 mutation_rate = 0.05
 quality_level = 1430
 maximum_time = 2
@@ -310,3 +308,105 @@ Finally, is worth noting at this point that since the execution time of a partic
 algorithm depends on the machine where it is run, comparing the running time of
 different approaches executed in machines with different characteristics would
 be unfair.
+
+## Evolution of the fitness
+
+To analyse the convergence of an evolutionary algorithm, the evolution of the fitness is
+usually studied. For instance, suppose the version of the genetic approach where the
+stopping criterion is based on the number of generations performed.
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+  mean_fitnesses = []
+  generations = []
+
+  for i in range(num_generations):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(population, fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+    population = children_population
+    fitnesses = [fitness(solution) for solution in population]
+
+    if (i % gen_period == 0):
+      generations.append(i)
+      mean_fitnesses.append(numpy.mean(fitnesses))
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight, generations, mean_fitnesses)
+```
+
+The approach has been slightly modified to save information about the mean fitness
+of the individuals in the population every `gen_period` generations. Now the
+function `genetic_algorithm` also returns that historical information. A visual
+representation of that information could be obtained by means of the next example:
+
+```python
+import random
+import time
+import numpy
+import matplotlib.pyplot as plt
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+num_generations = 100
+gen_period = 1
+
+# run the genetic algorithm and print the result
+best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm()
+
+fig, ax = plt.subplots()
+ax.plot(generations, mean_fitnesses)
+
+ax.set_xlabel('Number of generations')
+ax.set_ylabel('Mean fitness')
+ax.set_title('Evolution of the mean fitness')
+
+plt.show()
+```
+
+In a similar way, rather than using the evolution of the mean fitness, the evolution of the mean
+fitness or, even, the evolution of the maximum fitness could be also visualised by slightly
+modifying the function `genetic_algorithm`:
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+  max_fitnesses = []
+  generations = []
+
+  for i in range(num_generations):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(population, fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+    population = children_population
+    fitnesses = [fitness(solution) for solution in population]
+
+    if (i % gen_period == 0):
+      generations.append(i)
+      max_fitnesses.append(numpy.max(fitnesses))
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight, generations, max_fitnesses)
+```
+
+The only difference with respect to the previous version is that now, `numpy.max`
+function is used, rather than using `numpy.mean`.
