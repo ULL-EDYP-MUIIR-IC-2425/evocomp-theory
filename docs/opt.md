@@ -210,7 +210,7 @@ algorithms cannot be applied (unless $P = NP$) since they become
 non-polynomial-time algorithms, and therefore they are not able to provide
 optimal solutions in a reasonable time for large instances.
 
-In contrast, approximate or {\it heuristic} schemes are able to generate
+In contrast, approximate or *heuristic* schemes are able to generate
 high-quality solutions, even optimal ones, in a reasonable time. However,
 using approximate algorithms does not guarantee that the optimal
 solution will be found.
