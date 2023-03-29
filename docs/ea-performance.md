@@ -178,21 +178,22 @@ def quality_level_satisfied(fitnesses, quality_level):
 
 # define the genetic algorithm
 def genetic_algorithm():
-    population = initialize_population()
-    fitnesses = [fitness(solution) for solution in population]
-    while not quality_level_satisfied(fitnesses, quality_level):
-        children_population = []
-        while (len(children_population) < population_size):
-          parents = select_parents(population, fitnesses)
-          children = crossover(parents)
-          children_population.extend([mutate(child) for child in children])
-        population = children_population
-        fitnesses = [fitness(solution) for solution in population]
-        end = time.time()
-    best_fitness = max(fitnesses)
-    best_solution = population[fitnesses.index(best_fitness)]
-    best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
-    return (best_solution, best_fitness, best_weight)
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+
+  while not quality_level_satisfied(fitnesses, quality_level):
+      children_population = []
+      while (len(children_population) < population_size):
+        parents = select_parents(population, fitnesses)
+        children = crossover(parents)
+        children_population.extend([mutate(child) for child in children])
+      population = children_population
+      fitnesses = [fitness(solution) for solution in population]
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight)
 ```
 
 The function `quality_level_satisfied` returns a `True` value if any individual
@@ -232,13 +233,80 @@ print(running_times)
 print("Mean execution time", numpy.mean(running_times), "seconds")
 ```
 
-As it can be observed, the `quality_level` has been fixed to 1428 in the example shown above.
-That value is the fitness of one of the optimal solutions for that particular instance. Now,
-it can be noted that running times are different considering different repetitions. What would
-happen if the algorithm is not able to find a solution with the minimum quality level set? How
-could it be modified?
+As it can be observed, the `quality_level` has been fixed to the value 1428 in the example
+shown above. That value is the fitness, i.e. the addition of the profits of those items
+included into the knapsack, of one of the optimal solutions for that particular instance. Now,
+it can be noted that running times are different considering different repetitions.
 
-It is worth noting at this point that since the execution time of a particular
-algorithm depends on the machine that it is run, comparing the running time of
+What would happen if the algorithm is not able to find a solution with the minimum quality
+level set? How could it be modified?
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+  start = time.time()
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+  elapsed_time = time.time() - start;
+
+  while (not quality_level_satisfied(fitnesses, quality_level)) and (elapsed_time < maximum_time):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(population, fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+    population = children_population
+    fitnesses = [fitness(solution) for solution in population]
+    elapsed_time = time.time() - start;
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight)
+```
+
+This version of the genetic algorithm considers the `maximum_time` allowed to run
+in the stopping criterion. For those cases where the algorithm cannot satisfy the
+minimum quality level established, it will end its execution once the maximum running
+time is achieved.
+
+```python
+import random
+import time
+import numpy
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+num_generations = 1000
+mutation_rate = 0.05
+quality_level = 1430
+maximum_time = 2
+
+# run the genetic algorithm and print the result
+
+number_rep = 30
+running_times = []
+
+for i in range(number_rep):
+  start = time.time()
+  best_solution, best_fitness, best_weight = genetic_algorithm()
+  end = time.time()
+  running_times.append(end - start)
+
+print(running_times)
+print("Mean execution time", numpy.mean(running_times), "seconds")
+```
+
+As it can be observed, now the quality level has been fixed to 1430, a value that any algorithm
+will find for this particular instance. It can be noted how all the running times are close to
+two seconds, which in fact is the `maximum_time` allowed to run the algorithm.
+
+Finally, is worth noting at this point that since the execution time of a particular
+algorithm depends on the machine where it is run, comparing the running time of
 different approaches executed in machines with different characteristics would
 be unfair.
