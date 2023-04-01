@@ -13,7 +13,7 @@ Having a set of items, each with a profit and a weight, the objective is to
 maximise the total profit of the items included into the knapsack, while
 satisfying the knapsack maximum capacity constraint.
 
-The reader is referred to this
+To better understand the problem, the reader is referred to this
 [web KP solver](https://cristianabrante.github.io/GeneticsJsKnapsack/)
 implemented by Cristian Abrante by using the TypeScript library
 [GeneticsJS](https://geneticsjs.github.io/GeneticsJS/index.html).
@@ -116,7 +116,7 @@ Once probabilities are calculated, two parents have to be selected. For selectin
 parents, a random number is generated in the range $[0, 1)$ through `random.uniform(0, 1)`.
 If the random number generated is lower than the cumulative probability of an individual,
 then that individual is selected as a parent. As a result, the larger the fitness of an
-individual, the higher their probability of being selected as a parent (it has a larger share
+individual, the higher its probability of being selected as a parent (it has a larger share
 of the roulette wheel). The above is the reason why this strategy is called fitness
 proportional selection or roulette wheel selection.
 

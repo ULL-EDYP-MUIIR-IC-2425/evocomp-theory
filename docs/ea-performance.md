@@ -2,20 +2,20 @@
 
 In this section, a brief description of metrics to assess the performance of
 an stochastic approach, and particularly, an evolutionary algorithm, is given.
-Examples are illustrated by means of the genetic algorithm implemented in the
-previous section for dealing with the knapsack problem.
+Examples are illustrated by means of the GA implemented in the
+previous section for dealing with the KP.
 
-Evolutionary algorithms take some of their decisions using randomness. Bearing
+EAs take some of their decisions using randomness. Bearing
 the above in mind, given the same input, the output is likely to be different. As
 a result, every run needs to be repeated several times. Hence, performance
-metrics are usually based on statistics.
+metrics are based on statistics.
 
 ## Running time
 
-The running time of an evolutionary algorithm depends on three main factors:
+The running time of an EA depends on three main factors:
 
 * The size of the instance addressed.
-* The parameterisation of the evolutionary algorithm, e.g. the stopping criterion
+* The parameterisation of the EA, e.g. the stopping criterion
 (if it is different to the execution time itself, i.e. the number of generations or
 the number of fitness function evaluations), the population size or the crossover rate.
 * The features of the machine where the algorithm is run.
@@ -53,7 +53,7 @@ for i in range(number_rep):
 print("Mean execution time", numpy.mean(running_times), "seconds")
 ```
 
-Going on with the knapsack problem, in the above example, the algorithm is run for 1000 generations
+Going on with the KP, in the above example, the algorithm is run for 1000 generations
 with a population size of 10 indivuals, while in the example shown below, the algorithm is run for 1000
 generations with a population size equal to 100 individuals. Both cases deal with the same instance.
 As it can be observed, in the second case, the mean running time is larger in comparison to the mean
@@ -153,10 +153,10 @@ for i in range(number_rep):
 print("Mean execution time", numpy.mean(running_times), "seconds")
 ```
 
-The ideal scenario is that an evolutionary algorithm provides the optimal solution
+The ideal scenario is that an EA provides the optimal solution
 to a particular instance of a problem in the lowest possible budget of time.
-Nevertheless, evolutionary algorithms do not ensure to provide the optimal solution.
-Consequently, the running time must be taken carefully when measuring their performance.
+Nevertheless, EAs do not ensure to provide the optimal solution. Consequently,
+the running time must be taken carefully when measuring their performance.
 If the running time of the approach is small, but the solutions provided are not good,
 the metric becomes unreliable.
 
@@ -246,7 +246,7 @@ def genetic_algorithm():
   start = time.time()
   population = initialize_population()
   fitnesses = [fitness(solution) for solution in population]
-  elapsed_time = time.time() - start;
+  elapsed_time = time.time() - start
 
   while (not quality_level_satisfied(fitnesses, quality_level)) and (elapsed_time < maximum_time):
     children_population = []
@@ -256,7 +256,7 @@ def genetic_algorithm():
       children_population.extend([mutate(child) for child in children])
     population = children_population
     fitnesses = [fitness(solution) for solution in population]
-    elapsed_time = time.time() - start;
+    elapsed_time = time.time() - start
 
   best_fitness = max(fitnesses)
   best_solution = population[fitnesses.index(best_fitness)]
@@ -306,8 +306,9 @@ two seconds, which in fact is the `maximum_time` allowed to run the algorithm.
 
 Finally, is worth noting at this point that since the execution time of a particular
 algorithm depends on the machine where it is run, comparing the running time of
-different approaches executed in machines with different characteristics would
-be unfair.
+different approaches executed in machines with different characteristics would be unfair.
+A much fairer approach, for those cases, would be tu run the algorithms by considering
+a maximum number of fitness function evaluations as the stopping criterion.
 
 ## Evolution of the fitness
 
@@ -342,9 +343,9 @@ def genetic_algorithm():
   return (best_solution, best_fitness, best_weight, generations, mean_fitnesses)
 ```
 
-The approach has been slightly modified to save information about the mean fitness
+The GA has been slightly modified to save information about the mean fitness
 of the individuals in the population every `gen_period` generations. Now the
-function `genetic_algorithm` also returns that historical information. A visual
+function `genetic_algorithm` also returns that historical data. A visual
 representation of that information could be obtained by means of the next example:
 
 ```python
@@ -377,8 +378,50 @@ ax.set_title('Evolution of the mean fitness')
 plt.show()
 ```
 
-In a similar way, rather than using the evolution of the mean fitness, the evolution of the mean
-fitness or, even, the evolution of the maximum fitness could be also visualised by slightly
+Nevertheless, as previously mentioned, we should repeat every execution to provide the results:
+
+```python
+import random
+import time
+import numpy
+import matplotlib.pyplot as plt
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+num_generations = 100
+gen_period = 1
+num_repetitions = 30
+
+# run the genetic algorithm and print the result
+runs = []
+for i in range(num_repetitions):
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm()
+  runs.append(mean_fitnesses)
+
+fig, ax = plt.subplots()
+ax.plot(generations, numpy.mean(runs, axis = 0))
+
+ax.set_xlabel('Number of generations')
+ax.set_ylabel('Mean fitness')
+ax.set_title('Evolution of the mean fitness in 30 repetitions')
+
+plt.show()
+```
+
+Once the GA finishes each of its repetitions, the historical data about the
+mean fitness, i.e. `mean_fitnesses`, is added as a new row into the matrix `runs`. Then we calculate
+the mean of the matrix `runs` by columns, by using the argument `axis=0` in the call to
+the function `numpy.mean`. Although the mean fitness in the different repetitions increases and
+decreases, in general terms, it can be observed an increment in the mean fitness at the end of the
+runs in comparison to the beginning.
+
+In a similar way, the evolution of the maximum fitness could be also visualised by slightly
 modifying the function `genetic_algorithm`:
 
 ```python
@@ -386,6 +429,7 @@ modifying the function `genetic_algorithm`:
 def genetic_algorithm():
   population = initialize_population()
   fitnesses = [fitness(solution) for solution in population]
+  mean_fitnesses = []
   max_fitnesses = []
   generations = []
 
@@ -400,13 +444,166 @@ def genetic_algorithm():
 
     if (i % gen_period == 0):
       generations.append(i)
-      max_fitnesses.append(numpy.max(fitnesses))
+      mean_fitnesses.append(numpy.mean(fitnesses))
+      max_fitnesses.append(max(fitnesses))
 
   best_fitness = max(fitnesses)
   best_solution = population[fitnesses.index(best_fitness)]
   best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
-  return (best_solution, best_fitness, best_weight, generations, max_fitnesses)
+  return (best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses)
 ```
 
-The only difference with respect to the previous version is that now, `numpy.max`
-function is used, rather than using `numpy.mean`.
+The only difference with respect to the previous version is that, now, not only information about
+the mean of the fitness is saved in the array `mean_fitnesses`, but also information
+about the maximum fitness is stored in the array `max_fitnesses`. In the following lines, an example
+showing how to visualize both the evolution of the mean fitness and the evolution of the maximum
+fitness is given:
+
+```python
+import random
+import time
+import numpy
+import matplotlib.pyplot as plt
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+num_generations = 100
+gen_period = 1
+num_repetitions = 30
+
+# run the genetic algorithm and print the result
+run_mean_fitnesses = []
+run_max_fitnesses = []
+for i in range(num_repetitions):
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm()
+  run_mean_fitnesses.append(mean_fitnesses)
+  run_max_fitnesses.append(max_fitnesses)
+
+fig, (ax1, ax2) = plt.subplots(2, 1)
+
+ax1.plot(generations, numpy.mean(run_mean_fitnesses, axis = 0))
+ax1.set_xlabel('Number of generations')
+ax1.set_ylabel('Mean fitness')
+ax1.set_title('Evolution of the mean fitness in 30 repetitions')
+
+ax2.plot(generations, numpy.mean(run_max_fitnesses, axis = 0))
+ax2.set_xlabel('Number of generations')
+ax2.set_ylabel('Max fitness')
+ax2.set_title('Evolution of the max fitness in 30 repetitions')
+
+fig.tight_layout()
+
+plt.show()
+```
+
+It is important to note that, in the case of the plot showing the evolution of the maximum fitness, at some
+generations, the mean of the maximum fitness decreases. The above is due to the survivor selection scheme
+used in the GA, which is a pure generational approach with no elitism. What would happen if elitism is somehow
+incorporated into the generational GA?
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+  parent_population = initialize_population()
+  parent_fitnesses = [fitness(solution) for solution in parent_population]
+  mean_fitnesses = []
+  max_fitnesses = []
+  generations = []
+
+  for i in range(num_generations):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(parent_population, parent_fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+
+    # Generational survivor selection scheme with elitism
+    best_parent_fitness = max(parent_fitnesses)
+    best_parent = parent_population[parent_fitnesses.index(best_parent_fitness)]
+
+    children_fitnesses = [fitness(child) for child in children_population]
+    best_child_fitness = max(children_fitnesses)
+    best_child = children_population[children_fitnesses.index(best_child_fitness)]
+
+    if best_child_fitness >= best_parent_fitness:
+      parent_population = children_population
+      parent_fitnesses = children_fitnesses
+    else:
+      parent_population.clear()
+      parent_fitnesses.clear()
+      parent_population.append(best_parent)
+      parent_fitnesses.append(best_parent_fitness)
+      parent_population.extend(children_population[1:])
+      parent_fitnesses.extend(children_fitnesses[1:])
+
+    if (i % gen_period == 0):
+      generations.append(i)
+      mean_fitnesses.append(numpy.mean(parent_fitnesses))
+      max_fitnesses.append(max(parent_fitnesses))
+
+  best_fitness = max(parent_fitnesses)
+  best_solution = parent_population[parent_fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses)
+```
+
+In every generation of this version of the GA, after generating the new children population,
+the best parent and the best offspring are looked for. In the case that the fitness of the
+best parent is worse than the fitness of the best children, the whole parent population is
+discarded and the children population becomes the parent population for the next generation, i.e.
+a pure generational survivor selection scheme is applied. Otherwise, the best parent is preserved
+for the next generation and the remaining individuals are taken from the children population.
+
+If the previous experiment is run with the last version of the GA, the plot with the evolution of
+the maximum fitness will not show any decrease.
+
+```python
+import random
+import time
+import numpy
+import matplotlib.pyplot as plt
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+num_generations = 100
+gen_period = 1
+num_repetitions = 30
+
+# run the genetic algorithm and print the result
+run_mean_fitnesses = []
+run_max_fitnesses = []
+for i in range(num_repetitions):
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm()
+  run_mean_fitnesses.append(mean_fitnesses)
+  run_max_fitnesses.append(max_fitnesses)
+
+fig, (ax1, ax2) = plt.subplots(2, 1)
+
+ax1.plot(generations, numpy.mean(run_mean_fitnesses, axis = 0))
+ax1.set_xlabel('Number of generations')
+ax1.set_ylabel('Mean fitness')
+ax1.set_title('Evolution of the mean fitness in 30 repetitions')
+
+ax2.plot(generations, numpy.mean(run_max_fitnesses, axis = 0))
+ax2.set_xlabel('Number of generations')
+ax2.set_ylabel('Max fitness')
+ax2.set_title('Evolution of the max fitness in 30 repetitions')
+
+fig.tight_layout()
+
+plt.show()
+```
+
+## Evolution of the diversity
