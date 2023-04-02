@@ -607,3 +607,163 @@ plt.show()
 ```
 
 ## Evolution of the diversity
+
+In addition to the evolution of the fitness, it is also important to analyse the evolution
+of the diversity in the population. The ideal scenario would be that the diversity is as
+highest as possible at the beginning of the search process, with the EA **exploring** the
+search space. At the end of the run, however, the diversity should be low, with the population
+of the EA converging, i.e. **exploting** a the most promising region of the search space found.
+
+Since in previous sections, a GA based on a binary representation of the solutions has been applied,
+to measure the diversity in the population, the Hamming distance could be used.
+
+```python
+def hamming_diversity(population):
+    n = len(population)
+    total_distance = 0
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            distance = sum(a != b for a, b in zip(population[i], population[j]))
+            total_distance += distance
+
+    diversity = total_distance / (n * (n - 1) / 2)
+
+    return diversity
+```
+
+Given two individuals, the number of different genes determines their Hamming distance. The above
+function calculates the mean Hamming distance among all pairs of individuals.
+
+For visualising the evolution of the diversity of both versions of the GA, i.e. the pure generational
+GA and the generational GA with elitism, the source code of both approaches needs to be slightly
+modified. The source code of the generational GA would be as follows.
+
+```python
+# define the genetic algorithm
+def genetic_algorithm():
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+  generations = []
+  diversity = []
+
+  for i in range(num_generations):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(population, fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+    population = children_population
+    fitnesses = [fitness(solution) for solution in population]
+
+    if (i % gen_period == 0):
+      generations.append(i)
+      diversity.append(hamming_diversity(population))
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight, generations, diversity)
+```
+
+It can be observed that, every `gen_period` generations, the diversity of the current
+population is calculated through the function `hamming_diversity` and stored in the
+array `diversity`.
+
+The source code of the generational GA with elitism is similar to the above.
+
+```python
+# define the genetic algorithm
+def genetic_algorithm_elitism():
+  parent_population = initialize_population()
+  parent_fitnesses = [fitness(solution) for solution in parent_population]
+  generations = []
+  diversity = []
+
+  for i in range(num_generations):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(parent_population, parent_fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+
+    # Generational survivor selection scheme with elitism
+    best_parent_fitness = max(parent_fitnesses)
+    best_parent = parent_population[parent_fitnesses.index(best_parent_fitness)]
+
+    children_fitnesses = [fitness(child) for child in children_population]
+    best_child_fitness = max(children_fitnesses)
+    best_child = children_population[children_fitnesses.index(best_child_fitness)]
+
+    if best_child_fitness >= best_parent_fitness:
+      parent_population = children_population
+      parent_fitnesses = children_fitnesses
+    else:
+      parent_population.clear()
+      parent_fitnesses.clear()
+      parent_population.append(best_parent)
+      parent_fitnesses.append(best_parent_fitness)
+      parent_population.extend(children_population[1:])
+      parent_fitnesses.extend(children_fitnesses[1:])
+
+    if (i % gen_period == 0):
+      generations.append(i)
+      diversity.append(hamming_diversity(parent_population))
+
+  best_fitness = max(parent_fitnesses)
+  best_solution = parent_population[parent_fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight, generations, diversity)
+```
+
+Finally, the following example shows the evolution of the diversity by considering
+30 repetitions of each GA version.
+
+```python
+import random
+import time
+import numpy
+import matplotlib.pyplot as plt
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+num_generations = 100
+gen_period = 1
+num_repetitions = 30
+
+# run the genetic algorithm and print the result
+diversity_matrix = []
+diversity_matrix_eli = []
+for i in range(num_repetitions):
+  best_solution, best_fitness, best_weight, generations, diversity = genetic_algorithm()
+  best_solution_eli, best_fitness_eli, best_weight_eli, generations_eli, diversity_eli = genetic_algorithm_elitism()
+  diversity_matrix.append(diversity)
+  diversity_matrix_eli.append(diversity_eli)
+
+fig, (ax1, ax2) = plt.subplots(2, 1)
+
+ax1.plot(generations, numpy.mean(diversity_matrix, axis = 0))
+ax1.set_xlabel('Number of generations')
+ax1.set_ylabel('Mean diversity')
+ax1.set_title('Evolution of the mean diversity in 30 repetitions - Generational GA')
+
+ax2.plot(generations, numpy.mean(diversity_matrix_eli, axis = 0))
+ax2.set_xlabel('Number of generations')
+ax2.set_ylabel('Mean diversity')
+ax2.set_title('Evolution of the mean diversity in 30 repetitions - Generational GA with elitism')
+
+fig.tight_layout()
+
+plt.show()
+```
+
+Visualising both plots, it can be noted that, as long the runs advance, the mean diversity decreases,
+i.e., individuals in the population are less diverse or, in other words, more similar among them.
+
+## Statistical comparison procedure
