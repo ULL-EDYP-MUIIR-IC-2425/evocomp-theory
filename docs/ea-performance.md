@@ -766,4 +766,108 @@ plt.show()
 Visualising both plots, it can be noted that, as long the runs advance, the mean diversity decreases,
 i.e., individuals in the population are less diverse or, in other words, more similar among them.
 
-## Statistical comparison procedure
+## Comparing different algorithms
+
+In this section, a comparison among the previous GA and a random search procedure will be described.
+The following code shows the source code of a possible random search implementation for the KP.
+
+```python
+def random_search(maximum_time, values, weights, max_weight):
+    start = time.time()
+    n = len(values)
+    best_fitness = 0
+    best_weight = 0
+    best_solution = []
+    elapsed_time = time.time() - start
+
+    while (elapsed_time < maximum_time):
+        solution = [random.choice([True, False]) for i in range(n)]
+        weight = sum(solution[i] * weights[i] for i in range(n))
+
+        if weight <= max_weight:
+            fitness = sum(solution[i] * values[i] for i in range(n))
+
+            if fitness > best_fitness:
+                best_fitness = fitness
+                best_solution = solution
+                best_weight = weight
+        elapsed_time = time.time() - start
+
+    return (best_solution, best_fitness, best_weight)
+```
+
+Since both approaches will be run in a machine with the same characteristics, the maximum running time has been selected as the stopping criterion. It can be observed that, while the current running time is lower than the maximum execution time, a new solution is randomly generated. If the solution satisfies the knapsack capacity constraint, the fitness of the said solution is computed. Finally, the current solution is compared to the best solution found ever. It the former is better than the latter, the former becomes the current best solution found.
+
+The GA that makes use of the same stopping criterion will be as follows.
+
+```python
+def genetic_algorithm():
+  start = time.time()
+  population = initialize_population()
+  fitnesses = [fitness(solution) for solution in population]
+  elapsed_time = time.time() - start
+
+  while (elapsed_time < maximum_time):
+    children_population = []
+    while (len(children_population) < population_size):
+      parents = select_parents(population, fitnesses)
+      children = crossover(parents)
+      children_population.extend([mutate(child) for child in children])
+    population = children_population
+    fitnesses = [fitness(solution) for solution in population]
+    elapsed_time = time.time() - start
+
+  best_fitness = max(fitnesses)
+  best_solution = population[fitnesses.index(best_fitness)]
+  best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+  return (best_solution, best_fitness, best_weight)
+```
+
+Now, we have two different stochastic approaches whose performance could be compared. To do so, as it has previously mentioned, several repetitions of the runs must be performed.
+
+```python
+import random
+import time
+import numpy as np
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+
+maximum_time = 0.2
+number_reps = 30
+rs_fitnesses = []
+ga_fitnesses = []
+
+for i in range(number_reps):
+  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, values, weights, max_weight)
+  rs_fitnesses.append(rs_best_fitness)
+  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm()
+  ga_fitnesses.append(ga_best_fitness)
+```
+
+It can be noted that each run will take 0.2 seconds. Hence, both algorithms can be compared in a fair manner. Furthermore, the runs are repeated 30 times e and the best fitness values returned by both algorithms are stored in arrays `rs_fitnesses` and `ga_fitnesses`.
+
+Once we have gathered all the above information, we could, for instance, obtain a summary of some statistics or, even, show some boxplots with the fitness achieved through the runs.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.DataFrame({'rs': rs_fitnesses, 'ga': ga_fitnesses});
+summary = data.describe()
+print(summary)
+
+fig, ax = plt.subplots()
+data.boxplot(ax=ax)
+ax.set_ylabel('Fitness')
+plt.show()
+```
+
+For this particular example, it can be observed how the statistics of the results achieved by the GA are, generally speaking, better than the statistics of the results attained by the RS. The above is something that we expected since, the GA performs a better exploration of the decision space, since it makes use of information about the fitness for guiding the search procedure, something that the random search does not carry out.
+
