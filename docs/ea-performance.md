@@ -796,7 +796,12 @@ def random_search(maximum_time, values, weights, max_weight):
     return (best_solution, best_fitness, best_weight)
 ```
 
-Since both approaches will be run in a machine with the same characteristics, the maximum running time has been selected as the stopping criterion. It can be observed that, while the current running time is lower than the maximum execution time, a new solution is randomly generated. If the solution satisfies the knapsack capacity constraint, the fitness of the said solution is computed. Finally, the current solution is compared to the best solution found ever. It the former is better than the latter, the former becomes the current best solution found.
+Since both approaches will be run in a machine with the same characteristics, the maximum running
+time has been selected as the stopping criterion. It can be observed that, while the current running
+time is lower than the maximum execution time, a new solution is randomly generated. If the solution
+satisfies the knapsack capacity constraint, the fitness of the said solution is computed. Finally,
+the current solution is compared to the best solution found ever. It the former is better than the
+latter, the former becomes the current best solution found.
 
 The GA that makes use of the same stopping criterion will be as follows.
 
@@ -823,7 +828,8 @@ def genetic_algorithm():
   return (best_solution, best_fitness, best_weight)
 ```
 
-Now, we have two different stochastic approaches whose performance could be compared. To do so, as it has previously mentioned, several repetitions of the runs must be performed.
+Now, we have two different stochastic approaches whose performance could be compared.
+To do so, as it has previously mentioned, several repetitions of the runs must be performed.
 
 ```python
 import random
@@ -871,4 +877,111 @@ plt.show()
 
 For this particular example, it can be observed how the statistics of the results achieved by the GA are, generally speaking, better than the statistics of the results attained by the RS. The above is something that we expected since, the GA performs a better exploration of the decision space, since it makes use of information about the fitness for guiding the search procedure, something that the random search does not carry out.
 
-Nevertheless, the above claim needs to be supported statistically, and as a result, a statistical comparison procedure must be applied to the results attained by both algorithms. As it was specified in the first section of these notes, the following statistical procedure could be applied in an effort to assign statistical confidence to the results. First a Shapiro-Wilk test is performed to check whether the values of the results follow a normal (Gaussian) distribution or not. If so, the Levene test checks for the homogeneity of the variances. If samples have equal variances, an Analysis of Variance (ANOVA) is done; otherwise, a Welch test is performed. For non-Gaussian distributions, the non-parametric Kruskal-Wallis test is used. In every case, a significance level of 5% is considered.
+Nevertheless, the above claim needs to be supported statistically, and as a result, a statistical comparison procedure must be applied to the results attained by both algorithms. As it was specified in the first section of these notes, the following statistical procedure could be applied in an effort to assign statistical confidence to the results. First a Shapiro-Wilk test is performed to check whether the values of the results follow a normal (Gaussian) distribution or not. If so, the Levene test checks for the homogeneity of the variances. If samples have equal variances, an Analysis of Variance (ANOVA) is done; otherwise, a Welch test is performed. For non-Gaussian distributions, the non-parametric Kruskal-Wallis test is used. In every case, a significance level of 5% is considered, by default.
+
+```python
+import scipy.stats as stats
+
+def compare_samples(sample_1, sample_2, alpha=0.05):
+  final_p_value = 0
+  test_name = ""
+
+  # Shapiro-Wilk is performed to check whether both samples follow a normal
+  # distribution
+  p_value_sample_1 = stats.shapiro(sample_1).pvalue
+  p_value_sample_2 = stats.shapiro(sample_2).pvalue
+
+  # If both are normal
+  if p_value_sample_1 >= alpha and p_value_sample_2 >= alpha:
+    # Levene checks if both samples have the same variance
+    _, p_value_levene = stats.levene(sample_1, sample_2)
+    # Equal variances
+    if p_value_levene >= alpha:
+        _, p_value_anova = stats.f_oneway(sample_1, sample_2)
+        final_p_value = p_value_anova
+        test_name = "ANOVA"
+    # Not equal variances
+    else:
+        _, p_value_welch = stats.ttest_ind(sample_1, sample_2, equal_var=False)
+        final_p_value = p_value_welch
+        test_name = "WELCH"
+  # No normality in both samples
+  else:
+    _, final_p_value = stats.kruskal(sample_1, sample_2)
+    test_name = "KRUSKAL"
+
+  return final_p_value, test_name
+```
+
+The function `compare_samples` gets two arrays as arguments with both samples to be compared.
+The third argument, which is optional, allows the significance level of all statistical tests
+performed to be fixed. The function returns the final p-value after having followed the above
+statistical comparison procedure, in addition to the `test_name` that provided the said p-value.
+If the p-value is lower than the significance level fixed, then the corresponding null hypothesis
+is rejected:
+
+* **ANOVA**: The null hypothesis is that both samples have an equal mean.
+* **Welch**: The null hypothesis is that both samples have an equal mean.
+* **Kruskal-Wallis**: The null hypothesis is that both samples have an equal median.
+
+Bearing the above in mind, if `compare_samples` returns a p-value lower than the significance
+level, the null hypothesis is rejected, which means that both samples present statistically
+significant differences.
+
+In the case of comparing two samples including the best fitness values achieved by two different
+algorithms, the above means that the differences in performance between both approaches
+are statistically significant.
+
+Considering a maximisation problem, the algorithm obtaining the largest mean or median of the
+results (depending on the statistical test providing the p-value) would be performing better
+than the other.
+
+```python
+import random
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+
+# define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
+values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+max_weight = 970
+
+# define genetic algorithm parameters
+population_size = 100
+mutation_rate = 0.05
+
+maximum_time = 0.2
+number_reps = 30
+rs_fitnesses = []
+ga_fitnesses = []
+
+for i in range(number_reps):
+  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, values, weights, max_weight)
+  rs_fitnesses.append(rs_best_fitness)
+  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm()
+  ga_fitnesses.append(ga_best_fitness)
+
+
+data = pd.DataFrame({'RS': rs_fitnesses, 'GA': ga_fitnesses});
+summary = data.describe()
+print(summary)
+
+fig, ax = plt.subplots()
+data.boxplot(ax=ax)
+ax.set_ylabel('Fitness')
+plt.show()
+
+compare_samples(data["RS"], data["GA"])
+```
+
+If the above example is run, it is likely that the output shows a p-value, obtained by the Kruskal-Wallis test, which is
+smaller than the significance level. This is an expected outcome. The GA obtains in almost all its executions the optimum
+value for that particular instance, which means that the fitness values are not going to follow a normal distribution.
+As a result, a Kruskal-Wallis test is performed, which compares the fitness values obtained by the GA against the fitness
+values achieved by the random search. The resulting p-value is lower than the significance level because the median of the
+results attained by the GA is statistically different to the median of the results provided by the random search. In fact,
+the median of the former is larger in comparison to the median of the latter, thus concluding that the GA statistically
+outperforms the random search in this particular example.
