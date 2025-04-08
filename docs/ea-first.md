@@ -31,10 +31,10 @@ boolean values.
 
 ```python
 # define the initialisation function
-def initialize_population():
+def initialize_population(population_size, n):
     population = []
     for i in range(population_size):
-        solution = [random.choice([True, False]) for i in range(len(weights))]
+        solution = [random.choice([True, False]) for i in range(n)]
         population.append(solution)
     return population
 ```
@@ -55,11 +55,11 @@ process.
 
 ```python
 # define the fitness function
-def fitness(solution):
-    total_weight = sum(weights[i] for i in range(len(weights)) if solution[i])
+def fitness(solution, n, profits, weights, max_weight):
+    total_weight = sum(weights[i] for i in range(n) if solution[i])
     if total_weight > max_weight:
         return 0
-    return sum(values[i] for i in range(len(values)) if solution[i])
+    return sum(profits[i] for i in range(n) if solution[i])
 ```
 
 Given a `solution`, first of all, the `total_weight` of the items included into the knapsack
@@ -82,19 +82,19 @@ also known as *fitness proportional selection*.
 
 ```python
 # define the parent selection function
-def select_parents(population, fitnesses):
+def select_parents(population, fitnesses, population_size):
     total_fitness = sum(fitnesses)
     if (total_fitness != 0):
       probabilities = [fitness / total_fitness for fitness in fitnesses]
     else:
-      probabilities = [1 / len(population) for individual in population]
+      probabilities = [1 / population_size for individual in population]
     parents = []
     for i in range(2):
         selected = False
         while not selected:
             rand = random.uniform(0, 1)
             accum = 0
-            for j in range(len(population)):
+            for j in range(population_size):
                 accum += probabilities[j]
                 if rand < accum:
                     parents.append(population[j])
@@ -129,8 +129,8 @@ We could use the well-known *One Point Crossover* as one of the variation operat
 
 ```python
 # define the crossover function
-def crossover(parents):
-    crossover_point = random.randint(1, len(weights) - 1)
+def crossover(parents, n):
+    crossover_point = random.randint(1, n - 1)
     child1 = parents[0][:crossover_point] + parents[1][crossover_point:]
     child2 = parents[1][:crossover_point] + parents[0][crossover_point:]
     return [child1, child2]
@@ -149,8 +149,8 @@ the *Bit Flip Mutation* would be a suitable choice.
 
 ```python
 # define the mutation function
-def mutate(solution):
-    for i in range(len(solution)):
+def mutate(solution, n, mutation_rate):
+    for i in range(n):
         if random.random() < mutation_rate:
             solution[i] = not solution[i]
     return solution
@@ -170,20 +170,21 @@ is a traditional GA.
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm():
-    population = initialize_population()
+def genetic_algorithm(num_generations, population_size, mutation_rate, n, profits, weights, max_weight):
+    population = initialize_population(population_size, n)
     for i in range(num_generations):
-        fitnesses = [fitness(solution) for solution in population]
+        fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
         children_population = []
         while (len(children_population) < population_size):
-          parents = select_parents(population, fitnesses)
-          children = crossover(parents)
-          children_population.extend([mutate(child) for child in children])
+          parents = select_parents(population, fitnesses, population_size)
+          children = crossover(parents, n)
+          children_population.extend([mutate(child, n, mutation_rate) for child in children])
+        # Generational survivor selection scheme
         population = children_population
-    fitnesses = [fitness(solution) for solution in population]
+    fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
     best_fitness = max(fitnesses)
     best_solution = population[fitnesses.index(best_fitness)]
-    best_weight = sum(weights[i] for i in range(len(weights)) if best_solution[i])
+    best_weight = sum(weights[i] for i in range(n) if best_solution[i])
     return (best_solution, best_fitness, best_weight)
 ```
 
@@ -202,17 +203,18 @@ implemented above:
 import random
 
 # define the problem instance
+n = 5
 weights = [10, 20, 30, 40, 50]
-values = [100, 50, 150, 200, 300]
+profits = [100, 50, 150, 200, 300]
 max_weight = 100
 
 # define genetic algorithm parameters
 population_size = 10
-num_generations = 100
-mutation_rate = 0.1
+num_generations = 50
+mutation_rate = 0.2
 
 # run the genetic algorithm and print the result
-best_solution, best_fitness, best_weight = genetic_algorithm()
+best_solution, best_fitness, best_weight = genetic_algorithm(num_generations, population_size, mutation_rate, n, profits, weights, max_weight)
 print("Best solution:", best_solution)
 print("Best fitness:", best_fitness)
 print("Best weight:", best_weight)
@@ -223,8 +225,8 @@ be introduced into the knapsack. The capacity of the knapsack is defined as well
 Then, the parameters of the GA are set:
 
 * Population size: 10 individuals
-* Stopping criterion: 100 generations
-* Mutation rate: 0.1
+* Stopping criterion: 50 generations
+* Mutation rate: 0.2
 
 Finally, the GA is run by calling function `genetic_algorithm`. It is important to
 note at this point that, since an EA, and particularly, this GA, is a stochastic
