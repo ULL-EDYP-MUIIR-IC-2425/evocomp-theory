@@ -323,20 +323,20 @@ stopping criterion is based on the number of generations performed.
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm():
-  population = initialize_population()
-  fitnesses = [fitness(solution) for solution in population]
+def genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight):
+  population = initialize_population(population_size, n)
+  fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
   mean_fitnesses = []
   generations = []
 
   for i in range(num_generations):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(population, fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(population, fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
     population = children_population
-    fitnesses = [fitness(solution) for solution in population]
+    fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
 
     if (i % gen_period == 0):
       generations.append(i)
@@ -360,6 +360,7 @@ import numpy
 import matplotlib.pyplot as plt
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
 values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
@@ -367,11 +368,11 @@ max_weight = 970
 # define genetic algorithm parameters
 population_size = 100
 mutation_rate = 0.05
-num_generations = 100
-gen_period = 1
+num_generations = 1000
+gen_period = 10
 
 # run the genetic algorithm and print the result
-best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm()
+best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
 
 fig, ax = plt.subplots()
 ax.plot(generations, mean_fitnesses)
@@ -392,8 +393,9 @@ import numpy
 import matplotlib.pyplot as plt
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -406,7 +408,7 @@ num_repetitions = 30
 # run the genetic algorithm and print the result
 runs = []
 for i in range(num_repetitions):
-  best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm()
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses = genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
   runs.append(mean_fitnesses)
 
 fig, ax = plt.subplots()
@@ -431,9 +433,9 @@ modifying the function `genetic_algorithm`:
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm():
-  population = initialize_population()
-  fitnesses = [fitness(solution) for solution in population]
+def genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight):
+  population = initialize_population(population_size, n)
+  fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
   mean_fitnesses = []
   max_fitnesses = []
   generations = []
@@ -441,16 +443,16 @@ def genetic_algorithm():
   for i in range(num_generations):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(population, fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(population, fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
     population = children_population
-    fitnesses = [fitness(solution) for solution in population]
+    fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
 
     if (i % gen_period == 0):
       generations.append(i)
       mean_fitnesses.append(numpy.mean(fitnesses))
-      max_fitnesses.append(max(fitnesses))
+      max_fitnesses.append(numpy.max(fitnesses))
 
   best_fitness = max(fitnesses)
   best_solution = population[fitnesses.index(best_fitness)]
@@ -471,8 +473,9 @@ import numpy
 import matplotlib.pyplot as plt
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -486,7 +489,7 @@ num_repetitions = 30
 run_mean_fitnesses = []
 run_max_fitnesses = []
 for i in range(num_repetitions):
-  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm()
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
   run_mean_fitnesses.append(mean_fitnesses)
   run_max_fitnesses.append(max_fitnesses)
 
@@ -514,9 +517,9 @@ incorporated into the generational GA?
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm():
-  parent_population = initialize_population()
-  parent_fitnesses = [fitness(solution) for solution in parent_population]
+def genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight):
+  parent_population = initialize_population(population_size, n)
+  parent_fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in parent_population]
   mean_fitnesses = []
   max_fitnesses = []
   generations = []
@@ -524,15 +527,15 @@ def genetic_algorithm():
   for i in range(num_generations):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(parent_population, parent_fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(parent_population, parent_fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
 
     # Generational survivor selection scheme with elitism
     best_parent_fitness = max(parent_fitnesses)
     best_parent = parent_population[parent_fitnesses.index(best_parent_fitness)]
 
-    children_fitnesses = [fitness(child) for child in children_population]
+    children_fitnesses = [fitness(child, n, profits, weights, max_weight) for child in children_population]
     best_child_fitness = max(children_fitnesses)
     best_child = children_population[children_fitnesses.index(best_child_fitness)]
 
@@ -575,8 +578,9 @@ import numpy
 import matplotlib.pyplot as plt
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -590,7 +594,7 @@ num_repetitions = 30
 run_mean_fitnesses = []
 run_max_fitnesses = []
 for i in range(num_repetitions):
-  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm()
+  best_solution, best_fitness, best_weight, generations, mean_fitnesses, max_fitnesses = genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
   run_mean_fitnesses.append(mean_fitnesses)
   run_max_fitnesses.append(max_fitnesses)
 
@@ -623,16 +627,15 @@ Since in previous sections, a GA based on a binary representation of the solutio
 to measure the diversity in the population, the Hamming distance could be used.
 
 ```python
-def hamming_diversity(population):
-    n = len(population)
+def hamming_diversity(population, population_size):
     total_distance = 0
 
-    for i in range(n):
-        for j in range(i + 1, n):
+    for i in range(population_size):
+        for j in range(i + 1, population_size):
             distance = sum(a != b for a, b in zip(population[i], population[j]))
             total_distance += distance
 
-    diversity = total_distance / (n * (n - 1) / 2)
+    diversity = total_distance / (population_size * (population_size - 1) / 2)
 
     return diversity
 ```
@@ -646,20 +649,20 @@ modified. The source code of the generational GA would be as follows.
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm():
-  population = initialize_population()
-  fitnesses = [fitness(solution) for solution in population]
+def genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight):
+  population = initialize_population(population_size, n)
+  fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
   generations = []
   diversity = []
 
   for i in range(num_generations):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(population, fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(population, fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
     population = children_population
-    fitnesses = [fitness(solution) for solution in population]
+    fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
 
     if (i % gen_period == 0):
       generations.append(i)
@@ -679,24 +682,24 @@ The source code of the generational GA with elitism is similar to the above.
 
 ```python
 # define the genetic algorithm
-def genetic_algorithm_elitism():
-  parent_population = initialize_population()
-  parent_fitnesses = [fitness(solution) for solution in parent_population]
+def genetic_algorithm_elitism(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight):
+  parent_population = initialize_population(population_size, n)
+  parent_fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in parent_population]
   generations = []
   diversity = []
 
   for i in range(num_generations):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(parent_population, parent_fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(parent_population, parent_fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
 
     # Generational survivor selection scheme with elitism
     best_parent_fitness = max(parent_fitnesses)
     best_parent = parent_population[parent_fitnesses.index(best_parent_fitness)]
 
-    children_fitnesses = [fitness(child) for child in children_population]
+    children_fitnesses = [fitness(child, n, profits, weights, max_weight) for child in children_population]
     best_child_fitness = max(children_fitnesses)
     best_child = children_population[children_fitnesses.index(best_child_fitness)]
 
@@ -713,7 +716,7 @@ def genetic_algorithm_elitism():
 
     if (i % gen_period == 0):
       generations.append(i)
-      diversity.append(hamming_diversity(parent_population))
+      diversity.append(hamming_diversity(parent_population, population_size))
 
   best_fitness = max(parent_fitnesses)
   best_solution = parent_population[parent_fitnesses.index(best_fitness)]
@@ -731,8 +734,9 @@ import numpy
 import matplotlib.pyplot as plt
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -746,8 +750,8 @@ num_repetitions = 30
 diversity_matrix = []
 diversity_matrix_eli = []
 for i in range(num_repetitions):
-  best_solution, best_fitness, best_weight, generations, diversity = genetic_algorithm()
-  best_solution_eli, best_fitness_eli, best_weight_eli, generations_eli, diversity_eli = genetic_algorithm_elitism()
+  best_solution, best_fitness, best_weight, generations, diversity = genetic_algorithm(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
+  best_solution_eli, best_fitness_eli, best_weight_eli, generations_eli, diversity_eli = genetic_algorithm_elitism(num_generations, gen_period, population_size, mutation_rate, n, profits, weights, max_weight)
   diversity_matrix.append(diversity)
   diversity_matrix_eli.append(diversity_eli)
 
@@ -777,9 +781,8 @@ In this section, a comparison among the previous GA and a random search procedur
 The following code shows the source code of a possible random search implementation for the KP.
 
 ```python
-def random_search(maximum_time, values, weights, max_weight):
+def random_search(maximum_time, n, profits, weights, max_weight):
     start = time.time()
-    n = len(values)
     best_fitness = 0
     best_weight = 0
     best_solution = []
@@ -790,7 +793,7 @@ def random_search(maximum_time, values, weights, max_weight):
         weight = sum(solution[i] * weights[i] for i in range(n))
 
         if weight <= max_weight:
-            fitness = sum(solution[i] * values[i] for i in range(n))
+            fitness = sum(solution[i] * profits[i] for i in range(n))
 
             if fitness > best_fitness:
                 best_fitness = fitness
@@ -811,20 +814,21 @@ latter, the former becomes the current best solution found.
 The GA that makes use of the same stopping criterion will be as follows.
 
 ```python
-def genetic_algorithm():
+# define the genetic algorithm
+def genetic_algorithm(maximum_time, population_size, mutation_rate, n, profits, weights, max_weight):
   start = time.time()
-  population = initialize_population()
-  fitnesses = [fitness(solution) for solution in population]
+  population = initialize_population(population_size, n)
+  fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
   elapsed_time = time.time() - start
 
   while (elapsed_time < maximum_time):
     children_population = []
     while (len(children_population) < population_size):
-      parents = select_parents(population, fitnesses)
-      children = crossover(parents)
-      children_population.extend([mutate(child) for child in children])
+      parents = select_parents(population, fitnesses, population_size)
+      children = crossover(parents, n)
+      children_population.extend([mutate(child, n, mutation_rate) for child in children])
     population = children_population
-    fitnesses = [fitness(solution) for solution in population]
+    fitnesses = [fitness(solution, n, profits, weights, max_weight) for solution in population]
     elapsed_time = time.time() - start
 
   best_fitness = max(fitnesses)
@@ -842,8 +846,9 @@ import time
 import numpy as np
 
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -856,13 +861,13 @@ rs_fitnesses = []
 ga_fitnesses = []
 
 for i in range(number_reps):
-  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, values, weights, max_weight)
+  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, n, profits, weights, max_weight)
   rs_fitnesses.append(rs_best_fitness)
-  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm()
+  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm(maximum_time, population_size, mutation_rate, n, profits, weights, max_weight)
   ga_fitnesses.append(ga_best_fitness)
 ```
 
-It can be noted that each run will take 0.2 seconds. Hence, both algorithms can be compared in a fair manner. Furthermore, the runs are repeated 30 times e and the best fitness values returned by both algorithms are stored in arrays `rs_fitnesses` and `ga_fitnesses`.
+It can be noted that each run will take 0.2 seconds. Hence, both algorithms can be compared in a fair manner. Furthermore, the runs are repeated 30 times and the best fitness values returned by both algorithms are stored in arrays `rs_fitnesses` and `ga_fitnesses`.
 
 Once we have gathered all the above information, we could, for instance, obtain a summary of some statistics or, even, show some boxplots with the fitness achieved through the runs.
 
@@ -948,10 +953,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 
-
 # define the problem instance (Pissinger's knapPI_11_20_1000_1 - http://hjemmesider.diku.dk/~pisinger/codes.html)
+n = 20
 weights = [582, 194, 679, 485, 396, 873, 594, 264, 462, 330, 582, 388, 291, 132, 660, 528, 970, 330, 582, 462]
-values = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
+profits = [114, 38, 133, 95, 612, 171, 918, 408, 714, 510, 114, 76, 57, 204, 1020, 816, 190, 510, 114, 714]
 max_weight = 970
 
 # define genetic algorithm parameters
@@ -964,11 +969,10 @@ rs_fitnesses = []
 ga_fitnesses = []
 
 for i in range(number_reps):
-  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, values, weights, max_weight)
+  rs_best_solution, rs_best_fitness, rs_best_weight = random_search(maximum_time, n, profits, weights, max_weight)
   rs_fitnesses.append(rs_best_fitness)
-  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm()
+  ga_best_solution, ga_best_fitness, ga_best_weight = genetic_algorithm(maximum_time, population_size, mutation_rate, n, profits, weights, max_weight)
   ga_fitnesses.append(ga_best_fitness)
-
 
 data = pd.DataFrame({'RS': rs_fitnesses, 'GA': ga_fitnesses});
 summary = data.describe()
